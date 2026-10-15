@@ -2,3 +2,9 @@ image/
 what_for.md
 data/
 .env
+
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+experiments/*/*/

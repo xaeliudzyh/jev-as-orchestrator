@@ -1,0 +1,2 @@
+requests>=2.32.3,<3
+frida-decisions[torch] @ git+https://github.com/ai-forever/FRIDA-Decisions@v0.4.0

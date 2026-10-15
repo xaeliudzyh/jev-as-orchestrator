@@ -1,0 +1,2 @@
+-r requirements.txt
+frida-decisions[torch] @ git+https://github.com/ai-forever/FRIDA-Decisions@v0.4.0

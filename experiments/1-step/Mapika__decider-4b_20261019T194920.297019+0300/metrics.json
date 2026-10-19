@@ -1,0 +1,24 @@
+{
+  "n_samples": 521,
+  "hits": {
+    "accuracy@1": 348,
+    "accuracy@3": 462,
+    "accuracy@5": 474
+  },
+  "accuracy@1": 0.6679462571976967,
+  "accuracy@3": 0.8867562380038387,
+  "accuracy@5": 0.9097888675623801,
+  "status": "completed",
+  "evaluated_stage": 1,
+  "n_samples_planned": 521,
+  "n_samples_unprocessed": 0,
+  "n_errors": 0,
+  "complete": true,
+  "missing_labels": [
+    "get_education_analytics",
+    "headcount_staffing_block"
+  ],
+  "n_unreachable_samples": 19,
+  "elapsed_seconds": 2652.831523,
+  "error": null
+}

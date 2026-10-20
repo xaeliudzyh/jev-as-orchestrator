@@ -4,6 +4,45 @@
 Ровно два раннера: `run_openrouter.py` для Jev через OpenRouter и `run_hf.py`
 для открытых моделей с Hugging Face, локально или через API.
 
+## Результаты skill routing
+
+`1-step` — выбор по метаданным всех 64 скиллов; `2-step` — отбор top-k по
+метаданным и новое ранжирование по полным файлам. `@n` — hit@n: достаточно
+хотя бы одной истинной метки в первых n позициях. Все сохранённые прогоны ниже
+полные: 521 пример, без ошибок инференса. Значения — проценты.
+
+| Модель | Стратегия | @1 | @3 | @5 | Shortlist k |
+| --- | --- | ---: | ---: | ---: | ---: |
+| [Jev 1.13](experiments/1-step/typesafe__jev-1.13_20261019T163838.436424+0300/metrics.json) | 1-step | 87.72% | 93.09% | 93.86% | — |
+| [Jev 1.13](experiments/2-step/typesafe__jev-1.13_20261019T165248.171392+0300/metrics.json) | 2-step | 83.11% | 93.09% | 93.86% | 5 |
+| [FRIDA-Decisions](experiments/1-step/ai-forever__FRIDA-Decisions_20261015T223236.963472+0300/metrics.json) | 1-step | 70.06% | 84.84% | 90.21% | — |
+| [FRIDA-Decisions](experiments/2-step/ai-forever__FRIDA-Decisions_20261020T130508.664261+0300/metrics.json) | 2-step | 60.84% | 85.60% | 85.60% | 3 |
+| [Decider-4B](experiments/1-step/Mapika__decider-4b_20261019T194920.297019+0300/metrics.json) | 1-step | 66.79% | 88.68% | 90.98% | — |
+| Decider-4B | 2-step | — | — | — | — |
+| [Decider-2B](experiments/1-step/Mapika__decider-2b_20261019T185024.384703+0300/metrics.json) | 1-step | 48.75% | 64.11% | 69.87% | — |
+| [Decider-2B](experiments/2-step/Mapika__decider-2b_20261019T192314.251462+0300/metrics.json) | 2-step | 53.93% | 64.49% | 69.87% | 5 |
+| [Jeva-4B](experiments/1-step/LIQIIIII__Jeva-4B_20261020T142159.391644+0300/metrics.json) | 1-step | 44.72% | 68.33% | 77.35% | — |
+| [Jeva-4B](experiments/2-step/LIQIIIII__Jeva-4B_20261020T142255.424952+0300/metrics.json) | 2-step | 38.00% | 64.49% | 77.35% | 5 |
+| Kev-4B | Нет прогона | — | — | — | — |
+| as-is | Не указана | 68.52% | 79.66% | — | — |
+
+- Ссылки в названиях ведут в `metrics.json` соответствующего прогона.
+- Для FRIDA `2-step` взят последний завершённый эксперимент: **20.10.2026,
+  13:05:08 МСК**, с исправленным восстановлением `max_row_tokens`. Старый
+  результат 58.54% в таблицу не включён. При shortlist=3 её `@3` и `@5`
+  совпадают: оба измеряют попадание хотя бы одного эталона в shortlist.
+- У FRIDA отдельный `1-step` от 15.10 использует промпт с дополнительной фразой;
+  новый `2-step` от 20.10 — текущий промпт. Внутри нового прогона первый шаг
+  даёт 68.91% / 85.60% / 90.79%; чистый эффект стратегии оценивай относительно него.
+- `as-is` — предоставленные пользователем значения; отдельного артефакта,
+  описания стратегии и значения `@5` в репозитории нет. Прочерк означает отсутствие
+  измерения, а не ноль.
+- В корпусе остаются 19 примеров без доступной правильной метки; потолок
+  hit@n — 502/521 ≈ 96.35%.
+- Параметры моделей, устройство решения, форматы и примеры:
+  [OpenSourceModels.md](OpenSourceModels.md). Подробная сериализация SDK:
+  [docs/model_io.md](docs/model_io.md).
+
 ## Установка
 
 Рекомендуется отдельное окружение для каждого семейства моделей: зависимости их
@@ -24,6 +63,8 @@ python -m pip install -r requirements-frida.txt
 python -m pip install -r requirements-decider.txt
 # либо (Python 3.12/3.13)
 python -m pip install -r requirements-kev.txt
+# либо (Python 3.12, отдельное окружение)
+python -m pip install -r requirements-jeva.txt
 ```
 
 Для CUDA нужна подходящая сборка PyTorch под GPU/драйвер машины.
@@ -32,6 +73,14 @@ python -m pip install -r requirements-kev.txt
 `--model` принимает HF repo ID либо путь к уже скачанному checkpoint;
 `--adapter` нужен, если семейство нельзя определить по имени пути.
 Модели с другой архитектурой требуют своего адаптера или совместимого endpoint.
+
+Jeva-4B использует отдельный нативный пакет `jeva-model`, закреплённый в
+`requirements-jeva.txt` на проверенном commit. Его зависимости требуют Python
+3.12, Torch 2.9.1 и Transformers 5.17.0; не устанавливай их поверх окружения
+FRIDA/Decider. Этот requirements устанавливает базовый runtime без необязательных
+ускоренных kernels. Установка kernels и `jeva-doctor --check-kernels --strict`
+описаны в [upstream runtime guide](https://github.com/LiQiiiii/Jeva/blob/e2104e0720100f979f2cdd456a1cbbee96da0abd/docs/runtime.md).
+Без них допустим медленный reference path; его время не равно ускоренному.
 
 Экспортируй `OPENROUTER_API_KEY` / `HF_TOKEN` или заполни их в `.env`
 по образцу `.env.example`. Существующий `.env` менять не требуется.
@@ -68,7 +117,29 @@ python run_hf.py --model Mapika/decider-2b --mode local \
 python run_hf.py --model jaredpalmer/kev-4b --mode local \
   --strategy 2-step --shortlist-k 3 --device cuda --dtype bfloat16 \
   --system-prompt prompts/routing.txt
+
+python run_hf.py --model LIQIIIII/Jeva-4B --mode local \
+  --strategy 1-step --device cuda --dtype bfloat16
+
+python run_hf.py --model LIQIIIII/Jeva-4B --mode local \
+  --strategy 2-step --shortlist-k 5 --device cuda --dtype bfloat16
 ```
+
+Для Jeva адаптер определяется автоматически; для локального каталога без `jeva`
+в имени укажи `--adapter jeva`. В benchmark используется `Choice(allow_null=False)`:
+выбор только среди скиллов, как у остальных моделей. Поля нативного ответа
+(`confidence`, `conditional_probabilities`, `null_probability`, usage, latency)
+сохраняются в details. `type` добавляется рядом с нативным `kind` для общего интерфейса.
+
+На 5060 Ti 16 GB Jeva по умолчанию кодирует варианты по одному:
+`--jeva-option-chunk-size 1 --jeva-option-batch-tokens 4096`. Бюджет batch не
+обрезает и не разбивает один длинный текст; достаточность VRAM зависит от его длины.
+Кеш вариантов отключён (`--jeva-cache none`) для измерения без повторного
+использования представлений. Для отдельного эксперимента с кешем есть
+`--jeva-cache set|hybrid`; его токены отражаются в `usage.cached_option_tokens`.
+Лимит `--max-input-tokens` у Jeva применяется отдельно к запросу с инструкцией и
+к каждому варианту, дополнительно ограничивается нативными caps checkpoint
+(текущие defaults 9000/8192). Переполнение — ошибка, тихой обрезки нет.
 
 Можно задать `--revision <commit-or-tag>` и `--cache-dir /path/to/cache`.
 Для воспроизводимых сравнений фиксируй ревизию весов; версии установленных
@@ -230,6 +301,16 @@ accuracy считается по завершённым примерам, а н�
 у Kev используются нативная проверка переполнения и дополнительный лимит раннера.
 В удалённом API точные токенизацию и ограничения определяет развёрнутый backend;
 ответ с явным `truncated=true` отклоняется.
+
+Расширенные caps FRIDA действуют только внутри одного вызова и восстанавливаются
+в `finally`, в том числе после ошибки CUDA. Длинный второй шаг больше не повышает
+`max_row_tokens` для следующих первых шагов. В `response.benchmark_input_limits`
+записываются эффективные `max_row_tokens` и `max_options_per_row` этого вызова.
+Это устраняет зависимость упаковки от предыдущих запросов; длинный вариант всё
+равно может требовать много памяти.
+
+Форматы входов, нативная сериализация, выходы, вероятности и разные определения
+confidence: [docs/model_io.md](docs/model_io.md).
 
 ## Проверки и источники интерфейсов
 

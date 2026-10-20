@@ -241,25 +241,90 @@ class FridaTests(unittest.TestCase):
             instruction_max_tokens: int = 96
             option_max_tokens: int = 256
             max_row_tokens: int = 1024
+            max_options_per_row: int = 16
         candidate = types.SimpleNamespace(state="q" * 30, instruction="i" * 200, text="t" * 1800)
         judge = Mock()
         judge.config = Config()
+        judge.state_max = 384
         judge.compile.return_value = (None, [candidate], None)
         judge.text.count = len
         judge.return_value = {"answers": {}}
+        observed = []
+        judge.side_effect = lambda _: observed.append((judge.config, judge.state_max)) or {"answers": {}}
         backend = object.__new__(LocalBackend)
         backend.adapter, backend.limit, backend.model = "frida", 4096, judge
         result = backend({"questions": {}})
-        self.assertEqual(judge.config.option_max_tokens, 1801)
-        self.assertEqual(judge.config.instruction_max_tokens, 200)
-        self.assertEqual(judge.state_max, 30)
+        self.assertEqual(observed[0][0].option_max_tokens, 1801)
+        self.assertEqual(observed[0][0].instruction_max_tokens, 200)
+        self.assertEqual(observed[0][1], 30)
+        self.assertEqual(judge.config, Config())
+        self.assertEqual(judge.state_max, 384)
+        self.assertEqual(result["benchmark_input_limits"]["max_row_tokens"], 2031)
         self.assertTrue(result["benchmark_input_limits"]["expanded_native_caps"])
+        # The next metadata-only call must use the native row budget again.
+        candidate.text = "short"
+        second = backend({"questions": {}})
+        self.assertEqual(second["benchmark_input_limits"]["max_row_tokens"], 1024)
+        self.assertEqual(observed[1][0].option_max_tokens, 6)
+        # Restore configuration even after an OOM or other forward error.
+        candidate.text = "t" * 1800
+        judge.side_effect = RuntimeError("CUDA out of memory")
+        with self.assertRaisesRegex(RuntimeError, "CUDA out of memory"):
+            backend({"questions": {}})
+        self.assertEqual(judge.config, Config())
+        self.assertEqual(judge.state_max, 384)
         backend.limit = 100
         with self.assertRaisesRegex(ValueError, "not truncated"):
             backend({})
 
 
 class NativeContractTests(unittest.TestCase):
+    def test_jeva_closed_choice_preserves_diagnostics_and_limits(self):
+        module = types.ModuleType("jeva")
+        @dataclasses.dataclass
+        class Choice:
+            instructions: str
+            criteria: dict
+            allow_null: bool = False
+        module.Choice = Choice
+        module.Jeva = Mock()
+        model = module.Jeva.from_pretrained.return_value
+        @dataclasses.dataclass
+        class ModelConfig:
+            torch_dtype: str = "bfloat16"
+        @dataclasses.dataclass
+        class Config:
+            model: ModelConfig = dataclasses.field(default_factory=ModelConfig)
+        model.config = Config()
+        model.checkpoint_dir = Path("/checkpoint")
+        model.max_state_length, model.max_option_length = 9000, 8192
+        native = {"answers": {"skill": {"kind": "choice", "choice": "a",
+            "probabilities": {"a": .7, "b": .3}, "conditional_probabilities": {"a": .7, "b": .3},
+            "null_probability": 0.0, "confidence": .7}},
+            "usage": {"input_tokens": 20, "cached_option_tokens": 0, "truncated_tokens": 0},
+            "latency_ms": 1.5}
+        model.system_one.return_value.to_dict.side_effect = lambda: json.loads(json.dumps(native))
+        payload = {"model": "LIQIIIII/Jeva-4B", "state": {"query": "hello"},
+            "questions": {"skill": {"type": "choice", "instructions": "route", "criteria": {"a": "A", "b": "B"}}}}
+        with patch.dict(sys.modules, {"jeva": module, "torch": types.ModuleType("torch")}):
+            backend = LocalBackend(payload["model"], "auto", device="cuda", max_input_tokens=2000)
+            self.assertEqual(backend.adapter, "jeva")
+            self.assertEqual((model.max_state_length, model.max_option_length), (2000, 2000))
+            module.Jeva.from_pretrained.assert_called_once_with(payload["model"], device="cuda", dtype=None,
+                cache="none", truncation="error", option_chunk_size=1, option_batch_tokens=4096)
+            result = backend(payload)
+            model.system_one.assert_called_once_with(state=payload["state"], questions={"skill": Choice("route", {"a": "A", "b": "B"}, False)})
+            ranking, _ = rank_response(result, ["a", "b"])
+            self.assertEqual(ranking[0]["skill"], "a")
+            self.assertEqual(result["answers"]["skill"]["confidence"], .7)
+            self.assertEqual(result["usage"], native["usage"])
+            self.assertEqual(result["latency_ms"], 1.5)
+            native["usage"]["truncated_tokens"] = 1
+            with self.assertRaisesRegex(ValueError, "truncated"):
+                rank_response(backend(payload), ["a", "b"])
+            backend.close()
+            model.clear_cache.assert_called_once()
+
     def test_decider_passes_both_request_parts_without_cutting(self):
         module = types.ModuleType("decider.systemone")
         module.render_state = lambda state: state["query"]

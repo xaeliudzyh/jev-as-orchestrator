@@ -102,7 +102,7 @@ def common_parser(description):
 
 def package_versions():
     result = {}
-    for name in ("PyYAML", "requests", "torch", "transformers", "huggingface-hub", "frida-decisions", "decider-ai", "kev"):
+    for name in ("PyYAML", "requests", "torch", "transformers", "huggingface-hub", "frida-decisions", "decider-ai", "kev", "jeva-model"):
         try:
             result[name] = version(name)
         except PackageNotFoundError:

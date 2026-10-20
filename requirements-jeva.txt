@@ -1,0 +1,4 @@
+-r requirements.txt
+# Native reference runtime; requires its own Python 3.12 environment.
+# Optional accelerated kernels: see the pinned upstream docs/runtime.md.
+jeva-model @ git+https://github.com/LiQiiiii/Jeva@e2104e0720100f979f2cdd456a1cbbee96da0abd

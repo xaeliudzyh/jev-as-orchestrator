@@ -54,16 +54,19 @@ class LocalBackend:
     """Use native decision heads, never generated/self-reported probabilities."""
 
     def __init__(self, model: str, adapter: str, device="auto", dtype="auto", revision=None,
-                 cache_dir=None, max_input_tokens=32768):
+                 cache_dir=None, max_input_tokens=32768, jeva_cache="none",
+                 jeva_option_chunk_size=1, jeva_option_batch_tokens=4096):
         import torch
 
         if max_input_tokens <= 0:
             raise ValueError("--max-input-tokens must be positive")
         if adapter == "auto":
             name = model.lower()
-            adapter = next((key for key in ("frida", "decider", "kev") if key in name), "")
+            adapter = next((key for key in ("frida", "decider", "kev", "jeva") if key in name), "")
             if not adapter:
-                raise ValueError("Cannot infer adapter; specify --adapter frida|decider|kev")
+                raise ValueError("Cannot infer adapter; specify --adapter frida|decider|kev|jeva")
+        if adapter == "jeva" and (jeva_option_chunk_size <= 0 or jeva_option_batch_tokens <= 0):
+            raise ValueError("Jeva option chunk size and batch token budget must be positive")
         if device == "auto":
             device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
         torch_dtype = None if dtype == "auto" else getattr(torch, dtype)
@@ -90,6 +93,22 @@ class LocalBackend:
                 self.model = Decider(resolved, device=device, dtype=torch_dtype, use_graphs=False)
                 self.info["temperature"] = self.model.T
                 self.info["temperature_by_type"] = self.model.T_by_type
+            elif adapter == "jeva":
+                from jeva import Jeva
+                self.model = Jeva.from_pretrained(resolved, device=device, dtype=torch_dtype,
+                    cache=jeva_cache, truncation="error", option_chunk_size=jeva_option_chunk_size,
+                    option_batch_tokens=jeva_option_batch_tokens)
+                # Retain the checkpoint's native length limits; the CLI may only lower them.
+                self.model.max_state_length = min(self.model.max_state_length, self.limit)
+                self.model.max_option_length = min(self.model.max_option_length, self.limit)
+                self.info.update(native_config=dataclasses.asdict(self.model.config),
+                    resolved_path=str(self.model.checkpoint_dir),
+                    dtype=self.model.config.model.torch_dtype,
+                    cache=jeva_cache, option_chunk_size=jeva_option_chunk_size,
+                    option_batch_tokens=jeva_option_batch_tokens, allow_null=False,
+                    max_state_length=self.model.max_state_length,
+                    max_option_length=self.model.max_option_length,
+                    truncation="error")
             elif adapter == "kev":
                 from kev.checkpoint import Checkpoint, LoadOptions
                 from kev.serve import Server
@@ -115,14 +134,39 @@ class LocalBackend:
             option_size = max(count(c.text) + 1 for c in candidates)
             if state_size + instruction_size + option_size > self.limit:
                 raise ValueError("FRIDA candidate exceeds --max-input-tokens; input was not truncated")
-            self.model.state_max = max(1, state_size)
-            self.model.config = dataclasses.replace(self.model.config,
+            original_config, original_state_max = self.model.config, self.model.state_max
+            request_config = dataclasses.replace(original_config,
                 instruction_max_tokens=max(1, instruction_size), option_max_tokens=max(1, option_size),
-                max_row_tokens=max(self.model.config.max_row_tokens, state_size + instruction_size + option_size))
-            result = self.model(payload)
+                max_row_tokens=max(original_config.max_row_tokens, state_size + instruction_size + option_size))
+            # Caps belong to this request, including when inference raises. Otherwise a long
+            # stage-2 option permanently changes packing and memory use of later stage-1 calls.
+            try:
+                self.model.state_max = max(1, state_size)
+                self.model.config = request_config
+                result = self.model(payload)
+            finally:
+                self.model.config = original_config
+                self.model.state_max = original_state_max
             result["benchmark_input_limits"] = {"state_tokens": state_size,
                 "instruction_max_tokens": instruction_size, "option_max_tokens": option_size,
+                "max_row_tokens": request_config.max_row_tokens,
+                "max_options_per_row": request_config.max_options_per_row,
                 "expanded_native_caps": True}
+            return result
+        if self.adapter == "jeva":
+            from jeva import Choice
+            questions = {}
+            for name, spec in payload["questions"].items():
+                if spec["type"] != "choice":
+                    raise ValueError("The benchmark's Jeva adapter supports choice questions only")
+                questions[name] = Choice(instructions=spec["instructions"],
+                    criteria=spec["criteria"], allow_null=False)
+            result = self.model.system_one(state=payload["state"], questions=questions).to_dict()
+            # Keep every native diagnostic; add the common answer type for rank_response.
+            for answer in result["answers"].values():
+                answer["type"] = answer["kind"]
+            result["model"] = payload["model"]
+            result["truncated"] = result["usage"]["truncated_tokens"] > 0
             return result
         if self.adapter == "decider":
             from decider.systemone import render_state, render_question
@@ -149,6 +193,8 @@ class LocalBackend:
         return self.model.answer(request)
 
     def close(self):
+        if self.adapter == "jeva":
+            self.model.clear_cache()
         if self.resource is not None:
             self.resource.close()
 
@@ -166,4 +212,5 @@ def hf_backend(args):
             raise ValueError("--mode api requires --endpoint (a deployed native decision endpoint)")
         return HTTPBackend(args.endpoint, os.environ.get(args.api_key_env), args.timeout, args.retries, args.api_format)
     return LocalBackend(args.model, args.adapter, args.device, args.dtype,
-                        args.revision, args.cache_dir, args.max_input_tokens)
+                        args.revision, args.cache_dir, args.max_input_tokens,
+                        args.jeva_cache, args.jeva_option_chunk_size, args.jeva_option_batch_tokens)

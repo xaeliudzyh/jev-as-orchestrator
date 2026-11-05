@@ -55,16 +55,16 @@ class LocalBackend:
 
     def __init__(self, model: str, adapter: str, device="auto", dtype="auto", revision=None,
                  cache_dir=None, max_input_tokens=32768, jeva_cache="none",
-                 jeva_option_chunk_size=1, jeva_option_batch_tokens=4096):
+                 jeva_option_chunk_size=1, jeva_option_batch_tokens=4096, clef_quantization="none"):
         import torch
 
         if max_input_tokens <= 0:
             raise ValueError("--max-input-tokens must be positive")
         if adapter == "auto":
             name = model.lower()
-            adapter = next((key for key in ("frida", "decider", "kev", "jeva") if key in name), "")
+            adapter = next((key for key in ("frida", "decider", "kev", "jeva", "clef") if key in name), "")
             if not adapter:
-                raise ValueError("Cannot infer adapter; specify --adapter frida|decider|kev|jeva")
+                raise ValueError("Cannot infer adapter; specify --adapter frida|decider|kev|jeva|clef")
         if adapter == "jeva" and (jeva_option_chunk_size <= 0 or jeva_option_batch_tokens <= 0):
             raise ValueError("Jeva option chunk size and batch token budget must be positive")
         if device == "auto":
@@ -72,7 +72,10 @@ class LocalBackend:
         torch_dtype = None if dtype == "auto" else getattr(torch, dtype)
         self.adapter, self.limit, self.resource = adapter, max_input_tokens, None
         resolved = model
-        if revision or cache_dir:
+        if adapter == "clef" and not Path(model).is_dir() and revision is None:
+            from .clef import CLEF_REVISIONS
+            revision = CLEF_REVISIONS.get(model)
+        if revision or cache_dir or adapter == "clef":
             if not Path(model).is_dir():
                 from huggingface_hub import snapshot_download
                 # Native loaders need complete checkpoint/config/adapter files.
@@ -109,6 +112,10 @@ class LocalBackend:
                     max_state_length=self.model.max_state_length,
                     max_option_length=self.model.max_option_length,
                     truncation="error")
+            elif adapter == "clef":
+                from .clef import ClefRuntime
+                self.model = ClefRuntime(resolved, device, torch_dtype, self.limit, clef_quantization)
+                self.info.update(self.model.info)
             elif adapter == "kev":
                 from kev.checkpoint import Checkpoint, LoadOptions
                 from kev.serve import Server
@@ -124,6 +131,8 @@ class LocalBackend:
             raise RuntimeError(f"Install the native {adapter} runtime; see README.md. {error}") from error
 
     def __call__(self, payload: dict) -> dict:
+        if self.adapter == "clef":
+            return self.model(payload)
         if self.adapter == "frida":
             # Native FRIDA defaults cut instructions at 96 and options at 256 tokens.
             # Raise those caps to fit the actual input, including full stage-2 skills.
@@ -213,4 +222,5 @@ def hf_backend(args):
         return HTTPBackend(args.endpoint, os.environ.get(args.api_key_env), args.timeout, args.retries, args.api_format)
     return LocalBackend(args.model, args.adapter, args.device, args.dtype,
                         args.revision, args.cache_dir, args.max_input_tokens,
-                        args.jeva_cache, args.jeva_option_chunk_size, args.jeva_option_batch_tokens)
+                        args.jeva_cache, args.jeva_option_chunk_size, args.jeva_option_batch_tokens,
+                        getattr(args, "clef_quantization", "none"))

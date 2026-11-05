@@ -1,0 +1,9 @@
+-r requirements.txt
+# Separate environment; do not install over the pinned Jeva/FRIDA environments.
+# Reviewed Cloudflare releases use Qwen3_5ForConditionalGeneration + custom joint head.
+torch>=2.11.0
+transformers>=5.10.2
+huggingface-hub>=0.34.0
+accelerate>=1.10.0
+safetensors>=0.6.0
+Pillow>=11.0.0

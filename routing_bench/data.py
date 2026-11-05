@@ -21,10 +21,13 @@ class Skill:
     text: str
     path: str
     sha256: str
+    short_text: str | None = None
 
     def description(self, full: bool, fields: list[str]) -> str:
         if full:
             return self.text
+        if self.short_text is not None:
+            return self.short_text
         return json.dumps({field: self.metadata[field] for field in fields}, ensure_ascii=False)
 
 

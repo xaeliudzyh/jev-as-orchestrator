@@ -1,6 +1,11 @@
 image/
 what_for.md
-data/
+data/skill_routing_exp1/skills/*
+data/subagent_routing_exp2/agents/
+data/subagent_routing_exp2/*.zip
+data/subagent_routing_exp2/*.txt
+data/subagent_routing_exp2/*.py
+data/subagent_routing_exp2/b2e_skills_.csv
 .env
 
 .venv/

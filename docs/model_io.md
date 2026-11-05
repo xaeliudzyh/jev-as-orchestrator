@@ -5,10 +5,17 @@
 `expected_skills` и `sample_id` используются для оценки/логов и модели не передаются.
 Мы используем только `choice`, хотя SDK поддерживают и другие типы вопросов.
 
+Описанный ниже пример относится к **exp1**. В **exp2** используется тот же native
+choice API, но ID вопроса `subagent`, 21 кандидат вместо 64, а значения criteria —
+точные raw descriptions из `data/subagent_routing_exp2/subagents_routing_corpus.csv`.
+Эталон `expected_subagents` и source skill_name не передаются модели.
+Stage 2 получает полные тексты только выбранных 3/5 субагентов.
+Примеры новых моделей: [exp2/models_exp2.md](../exp2/models_exp2.md).
+
 ## Общий payload раннера
 
 Ниже сокращённый учебный пример с двумя вариантами. На реальном первом шаге
-передаются все 64 скилла, промпт целиком читается из `prompts/routing.txt`, а поля
+передаются все 64 скилла, промпт целиком читается из `exp1/routing_exp1.txt`, а поля
 метаданных и тексты берутся из каталога без перефразирования.
 
 ```python
@@ -56,7 +63,7 @@ Markdown/YAML-файл**, включая front matter, инструкции, з�
 
 ## Jev через OpenRouter
 
-`run_openrouter.py` отправляет этот payload HTTP POST на `/api/alpha/decisions`
+`exp1/run_openrouter_exp1.py` отправляет этот payload HTTP POST на `/api/alpha/decisions`
 (точный endpoint задаётся CLI). `instructions` — поле typed decision API;
 отдельного chat system message нет. Внутренний токенизированный формат Jev
 наш код не контролирует и из артефактов его восстановить нельзя.
@@ -266,3 +273,14 @@ SDK возвращает dataclass; адаптер вызывает `.to_dict()`
 - [Decider systemone](https://github.com/Mapika/decider/blob/main/decider/systemone.py) и [prompt](https://github.com/Mapika/decider/blob/main/decider/prompt.py), проверенная версия пакета 1.9.0.
 - [Kev API 1.0](https://github.com/jaredpalmer/kev/blob/kev-1.0/kev/api.py) и [model](https://github.com/jaredpalmer/kev/blob/kev-1.0/kev/model.py).
 - [Jeva inference](https://github.com/LiQiiiii/Jeva/blob/e2104e0720100f979f2cdd456a1cbbee96da0abd/src/jeva/inference.py), [collate](https://github.com/LiQiiiii/Jeva/blob/e2104e0720100f979f2cdd456a1cbbee96da0abd/src/jeva/_runtime/collate.py), [types](https://github.com/LiQiiiii/Jeva/blob/e2104e0720100f979f2cdd456a1cbbee96da0abd/src/jeva/types.py).
+
+
+## Cloudflare Clef и OpenAI Luna (exp2)
+
+[Подробная спецификация новых моделей](../exp2/models_exp2.md).
+Clef использует native `joint_schema_model.systemone`, скрытые состояния общего
+backbone и совместную schema head. Это не Jeva с другим размером и не чтение
+буквенных LM logits Decider. Его native confidence для choice равен p_max после
+округления. Для Luna и Jev значение confidence берётся из API без собственной формулы.
+В новых winners/detail confidence хранится отдельным полем даже когда отсутствует
+(null); в старых экспериментах ищи его в details.response.answers.skill.confidence.

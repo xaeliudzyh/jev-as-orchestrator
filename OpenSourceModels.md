@@ -1,7 +1,7 @@
-# Модели для skill routing
+# Модели для routing: exp1 и exp2
 
-Справка по моделям, поддержанным нашими раннерами, на 20.10.2026.
-Результаты корпуса — в [README](README.md#результаты-skill-routing), подробная
+Справка по моделям, поддержанным нашими раннерами, на 05.11.2026.
+Результаты корпуса — в [exp1/README](exp1/README.md#результаты-skill-routing), подробная
 сериализация SDK — в [docs/model_io.md](docs/model_io.md).
 
 ## Размеры и основные различия
@@ -13,7 +13,10 @@
 | Decider-4B | **4.206B**: 4 205 751 296 в checkpoint | Qwen3.5-4B-Base, тот же slot readout, что у 2B | Более крупный вариант Decider с другими обучением и калибровкой |
 | Jeva-4B | Текстовая часть **4.206B** + decision module **13.370M**, суммарно ≈**4.219B** после слияния LoRA | Независимое кодирование запроса и вариантов, затем decision stack по всему набору | Открытая архитектура с повторным использованием option memory и явной оценкой null |
 | Kev-4B | Backbone ≈**4.2B**; LoRA **33.8M** до слияния, плюс pointer head | Qwen3.5-4B-Base, LoRA rank 16 и pointer readout по границам вариантов | Открытая реализация System One с собственной головой, масками и сервером |
-| Original Jev 1.13 | Не установлен из доступных артефактов API | Удалённый typed decision endpoint TypeSafe через OpenRouter | Референс для сравнения; внутренний backbone и токенизация нашим кодом не контролируются |
+| Cloudflare Clef-flash | **9B** (Qwen3.5-9B) + joint schema head | Общий мультимодальный backbone и отдельный transformer decision head, softmax по вариантам | Открытые веса, опубликованный native head; без option cache Jeva |
+| Cloudflare Clef | **27B** (Qwen3.8-27B) + joint schema head | Та же схема решения, более крупный backbone | Более тяжёлый открытый decision endpoint; см. VRAM в exp2 |
+| GPT-6 Luna Decisions | Не раскрыто | Закрытый OpenAI Decisions API через OpenRouter | Другое семейство и провайдер; внутренний readout не опубликован |
+| Original Jev 1.13 / 1.14 | Не установлен из доступных артефактов API | Удалённый typed decision endpoint TypeSafe через OpenRouter | Референс для сравнения; внутренний backbone и токенизация нашим кодом не контролируются |
 
 Точные числа FRIDA и Decider получены суммированием размерностей тензоров в
 заголовках локальных safetensors; число decision module Jeva — из `head.pt`.
@@ -33,8 +36,8 @@ from pathlib import Path
 from routing_bench.data import load_skills
 
 state = {"query": "мои делегирования"}
-prompt = Path("prompts/routing.txt").read_text(encoding="utf-8").strip()
-skills = load_skills(Path("data/skills"))
+prompt = Path("exp1/routing_exp1.txt").read_text(encoding="utf-8").strip()
+skills = load_skills(Path("data/skill_routing_exp1/skills"))
 criteria = {
     s.name: s.description(False, ["name", "title", "description", "tags"])
     for s in skills
@@ -208,7 +211,7 @@ query: мои делегирования
 
 ## Original Jev — референс через API
 
-`run_openrouter.py` отправляет общий payload на
+`exp1/run_openrouter_exp1.py` отправляет общий payload на
 `https://openrouter.ai/api/alpha/decisions`. Промпт находится в
 `questions.skill.instructions`; отдельного chat system message нет.
 Веса не загружаются локально, GPU компьютера не используется для инференса.
@@ -256,3 +259,14 @@ confidence — как вернул backend. Полные распределен�
 
 Точные ревизии, версии пакетов, запросы и ответы каждого нашего прогона
 зафиксированы в его `config.json` и `stage_N_details.jsonl`.
+
+
+## Новые модели exp2
+
+[Clef, Clef-flash, Luna и актуальный Jev: устройство, точные форматы и примеры](exp2/models_exp2.md).
+В exp2 `questions.subagent.criteria` содержит raw description, а не JSON с metadata
+из примера exp1 выше. На втором шаге значения заменяются полными текстами shortlist.
+Общий справочник старых native SDK применим к обоим экспериментам: отличается
+содержимое вариантов и ID вопроса (`subagent` вместо `skill`).
+Новые прогоны отдельно сохраняют native confidence в winners; все исходные
+native поля по-прежнему доступны в details.response. Исторические файлы не переписаны.

@@ -197,7 +197,7 @@ class ExperimentTests(Fixtures):
         self.assertIsNone(metrics["accuracy@1"])
 
     def test_missing_labels_can_be_strict(self):
-        with self.assertRaisesRegex(ValueError, "missing skills"):
+        with self.assertRaisesRegex(ValueError, "missing candidates"):
             self.quiet_run(self.args("1-step", "--missing-labels", "error"), FakeBackend())
 
     def test_slice_keeps_original_ids(self):

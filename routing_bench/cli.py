@@ -2,8 +2,8 @@
 from .experiment import common_parser
 
 
-def hf_parser(description, experiment):
-    parser = common_parser(description, experiment)
+def hf_parser(description, experiment, **common_options):
+    parser = common_parser(description, experiment, **common_options)
     parser.add_argument("--mode", choices=("local", "api"), default="local")
     parser.add_argument("--adapter", choices=("auto", "frida", "decider", "kev", "jeva", "clef"), default="auto")
     parser.add_argument("--device", default="auto", help="auto, cpu, cuda, cuda:0, mps")

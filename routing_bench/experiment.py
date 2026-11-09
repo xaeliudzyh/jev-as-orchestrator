@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import math
 import platform
@@ -76,14 +77,19 @@ def accuracy(rows, expected_field="expected_skills"):
     return {"n_samples": n, "hits": hits, **{key: value / n if n else None for key, value in hits.items()}}
 
 
-def common_parser(description, experiment="exp1"):
+def common_parser(description, experiment="exp1", default_strategy=None, default_prompt=None):
     if experiment not in {"exp1", "exp2"}:
         raise ValueError("Unknown experiment profile")
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("--model", required=True, help="Model ID or local checkpoint directory")
-    parser.add_argument("--strategy", required=True, choices=("1-step", "2-step", "1", "2"))
+    strategies = parser.add_mutually_exclusive_group(required=default_strategy is None)
+    strategies.add_argument("--strategy", choices=("1-step", "2-step", "1", "2"), default=default_strategy)
+    if experiment == "exp2":
+        strategies.add_argument("--one-step-only", dest="strategy", action="store_const", const="1-step",
+                                help="Evaluate descriptions only; do not run the full-text second stage")
     parser.set_defaults(experiment=experiment, metadata_fields=[] if experiment == "exp2" else list(METADATA_FIELDS))
-    parser.add_argument("--system-prompt", type=Path, default=ROOT / experiment / f"routing_{experiment}.txt")
+    parser.add_argument("--system-prompt", type=Path,
+                        default=default_prompt or ROOT / experiment / f"routing_{experiment}.txt")
     if experiment == "exp1":
         parser.add_argument("--corpus", type=Path, default=ROOT / "data/skill_routing_exp1/corpus/corpus_find_skill.json")
         parser.add_argument("--skills-dir", type=Path, default=ROOT / "data/skill_routing_exp1/skills")
@@ -132,6 +138,9 @@ def run(args, factory) -> int:
         from dotenv import load_dotenv
         load_dotenv(args.env_file, override=False)
     strategy = {"1": "1-step", "2": "2-step"}.get(args.strategy, args.strategy)
+    export_stage1 = getattr(args, "export_stage1", False) and strategy == "2-step"
+    if export_stage1 and getattr(args, "experiment", "exp1") != "exp2":
+        raise ValueError("Paired stage-1 export is supported only for exp2")
     prompt = args.system_prompt.read_text(encoding="utf-8").strip()
     if not prompt:
         raise ValueError("System prompt is empty")
@@ -174,17 +183,25 @@ def run(args, factory) -> int:
             raise ValueError("Corpus references missing candidates; fix data or use --missing-labels keep")
     started = now()
     safe_name = re.sub(r"[^a-zA-Z0-9._-]+", "__", args.model).strip("._") or "model"
-    folder = args.output_dir / strategy / f"{safe_name[:120]}_{started.strftime('%Y%m%dT%H%M%S.%f%z')}"
+    run_id = f"{safe_name[:120]}_{started.strftime('%Y%m%dT%H%M%S.%f%z')}"
+    folder = args.output_dir / strategy / run_id
     folder.mkdir(parents=True, exist_ok=False)
+    first_folder = args.output_dir / "1-step" / run_id if export_stage1 else None
+    if first_folder is not None:
+        first_folder.mkdir(parents=True, exist_ok=False)
     print(f"Experiment: {folder}", flush=True)
+    if first_folder is not None:
+        print(f"Shared first-stage result: {first_folder}", flush=True)
     try:
         git = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         git = None
     config = {"schema_version": 2, "experiment": experiment, "question_id": question_id, "model": args.model, "strategy": strategy,
+        "run_id": run_id, "pipeline_strategy": strategy, "evaluated_stage": 2 if strategy == "2-step" else 1,
         "started_at": started.isoformat(), "timezone": "Europe/Moscow", "status": "prepared",
         "arguments": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
         "system_prompt": prompt, "system_prompt_placement": f"questions.{question_id}.instructions (native decision API has no chat system role)",
+        "system_prompt_sha256": sha256_bytes(prompt.encode("utf-8")),
         "input_structure": {"corpus": {"examples": [{"question": "str", "expected_skills": ["skill_name"]}]},
             "stage_1": {"state": {"query": "question"}, "criteria": "name -> JSON(metadata_fields)"},
             "stage_2": {"state": {"query": "question"}, "criteria": "top-k name -> complete original file text"}},
@@ -213,31 +230,62 @@ def run(args, factory) -> int:
         config["input_structure"]["candidate_filter"] = "all" if args.include_disabled else "enabled == 1"
         config["metadata_fields"] = None
         config["n_subagents"] = config.pop("n_skills")
-    dump(folder / "config.json", config)
-    dump(folder / ("subagents.json" if experiment == "exp2" else "skills.json"), [dict(name=s.name, metadata=s.metadata, text=s.text, short_text=s.short_text, path=s.path, sha256=s.sha256) for s in skills])
-    dump(folder / "samples.json", samples)
-    if args.dry_run:
-        dump(folder / "request_preview.json", make_payload(args.model, prompt, samples[0], skills, False, args.metadata_fields, question_id))
-        config.update(status="dry_run", finished_at=now().isoformat())
+    if first_folder is not None:
+        config["paired_artifact_dir"] = str(first_folder.resolve())
+        config["artifact_origin"] = "two_stage_pipeline"
+
+    def save_configs(first_status=None):
         dump(folder / "config.json", config)
-        dump(folder / "metrics.json", {"status": "dry_run", "n_samples_planned": len(samples),
-            "accuracy@1": None, "accuracy@3": None, "accuracy@5": None})
+        if first_folder is not None:
+            first_config = copy.deepcopy(config)
+            first_config.update(strategy="1-step", evaluated_stage=1, artifact_origin="shared_stage_1",
+                                paired_artifact_dir=str(folder.resolve()))
+            first_config["input_structure"].pop("stage_2", None)
+            first_config["metric_definition"] = "Per-sample hit@k of the exact first-stage calls; failures count as misses"
+            if first_status is not None:
+                first_config.update(status=first_status, pipeline_status=config["status"], pipeline_error=config.get("error"))
+                if first_status in {"completed", "completed_with_errors"}:
+                    first_config["error"] = None
+            dump(first_folder / "config.json", first_config)
+
+    save_configs()
+    for artifact_folder in (folder, first_folder):
+        if artifact_folder is None:
+            continue
+        dump(artifact_folder / ("subagents.json" if experiment == "exp2" else "skills.json"),
+             [dict(name=s.name, metadata=s.metadata, text=s.text, short_text=s.short_text, path=s.path, sha256=s.sha256) for s in skills])
+        dump(artifact_folder / "samples.json", samples)
+    if args.dry_run:
+        for artifact_folder in (folder, first_folder):
+            if artifact_folder is not None:
+                dump(artifact_folder / "request_preview.json", make_payload(args.model, prompt, samples[0], skills, False, args.metadata_fields, question_id))
+        config.update(status="dry_run", finished_at=now().isoformat())
+        save_configs("dry_run")
+        for artifact_folder in (folder, first_folder):
+            if artifact_folder is not None:
+                dump(artifact_folder / "metrics.json", {"status": "dry_run", "n_samples_planned": len(samples),
+                    "evaluated_stage": 1 if artifact_folder == first_folder or strategy == "1-step" else 2,
+                    "accuracy@1": None, "accuracy@3": None, "accuracy@5": None})
         return 0
     final_rows, first_rows = [], []
     backend = None
     status, fatal = "running", None
     stages = 2 if strategy == "2-step" else 1
+    stage_seconds = {stage: 0.0 for stage in range(1, stages + 1)}
     try:
         config["status"] = status
-        dump(folder / "config.json", config)
+        save_configs()
         backend = factory(args)
         config["backend"] = getattr(backend, "info", {})
         config["packages"] = package_versions()
-        dump(folder / "config.json", config)
+        save_configs()
         with ExitStack() as stack:
             handles = {stage: {kind: stack.enter_context((folder / f"stage_{stage}_{kind}.jsonl").open("w", encoding="utf-8"))
                                for kind in ("winners", "details")} for stage in range(1, stages + 1)}
             errors = stack.enter_context((folder / "errors.jsonl").open("w", encoding="utf-8"))
+            first_handles = {kind: stack.enter_context((first_folder / f"stage_1_{kind}.jsonl").open("w", encoding="utf-8"))
+                             for kind in ("winners", "details")} if first_folder is not None else None
+            first_errors = stack.enter_context((first_folder / "errors.jsonl").open("w", encoding="utf-8")) if first_folder is not None else None
             for sample in samples:
                 choices, previous_error = skills, None
                 for stage in range(1, stages + 1):
@@ -261,11 +309,17 @@ def run(args, factory) -> int:
                                       ranking=[], confidence=None, error=f"{type(error).__name__}: {error}")
                         detail = dict(record, probabilities={}, top_10=[])
                         append(errors, record)
+                        if stage == 1 and first_errors is not None:
+                            append(first_errors, record)
                         previous_error = record["error"]
                     detail.update(request=payload, response=response,
                                   candidate_order=[s.name for s in choices], elapsed_seconds=time.perf_counter() - clock_start)
+                    stage_seconds[stage] += detail["elapsed_seconds"]
                     append(handles[stage]["winners"], record)
                     append(handles[stage]["details"], detail)
+                    if stage == 1 and first_handles is not None:
+                        append(first_handles["winners"], record)
+                        append(first_handles["details"], detail)
                     if stage == 1:
                         first_rows.append(record)
                     if stage == stages:
@@ -289,24 +343,39 @@ def run(args, factory) -> int:
                 status, fatal = "failed", f"Backend cleanup failed: {error}"
         finished = now()
         config.update(status=status, finished_at=finished.isoformat(), error=fatal)
-        dump(folder / "config.json", config)
+        first_status = ("completed_with_errors" if any(r["status"] != "ok" for r in first_rows) else "completed") if len(first_rows) == len(samples) else status
+        save_configs(first_status)
         metrics = accuracy(final_rows, expected_field)
         metrics.update(status=status, evaluated_stage=stages, n_samples_planned=len(samples),
             n_samples_unprocessed=len(samples) - len(final_rows), n_errors=sum(r["status"] != "ok" for r in final_rows),
             complete=len(final_rows) == len(samples), missing_labels=missing,
             n_unreachable_samples=len(unreachable), elapsed_seconds=(finished - started).total_seconds(), error=fatal)
+        metrics.update(stage_inference_seconds={str(k): v for k, v in stage_seconds.items()},
+                       inference_seconds=sum(stage_seconds.values()), timing_scope="pipeline_wall_time")
         if stages == 2:
             metrics["stage_1_metrics"] = accuracy(first_rows, expected_field)
             metrics["shortlist_hit_rate"] = sum(bool(set(row["ranking"][:args.shortlist_k]) & set(row[expected_field]))
                                                 for row in first_rows) / len(first_rows) if first_rows else None
         dump(folder / "metrics.json", metrics)
+        if first_folder is not None:
+            first_metrics = accuracy(first_rows, expected_field)
+            first_metrics.update(status=first_status, evaluated_stage=1, n_samples_planned=len(samples),
+                n_samples_unprocessed=len(samples) - len(first_rows), n_errors=sum(r["status"] != "ok" for r in first_rows),
+                complete=len(first_rows) == len(samples), missing_labels=missing, n_unreachable_samples=len(unreachable),
+                elapsed_seconds=stage_seconds[1], inference_seconds=stage_seconds[1],
+                stage_inference_seconds={"1": stage_seconds[1]}, timing_scope="sum_of_recorded_stage_1_calls_in_shared_pipeline",
+                pipeline_elapsed_seconds=metrics["elapsed_seconds"], pipeline_status=status, pipeline_error=fatal,
+                error=fatal if len(first_rows) < len(samples) else None)
+            dump(first_folder / "metrics.json", first_metrics)
     print(json.dumps(metrics, ensure_ascii=False, indent=2))
     return 0 if status == "completed" else (130 if status == "interrupted" else 1)
 
 
-def main(parser, factory):
+def main(parser, factory, prepare_args=None):
     args = parser.parse_args()
     try:
+        if prepare_args is not None:
+            prepare_args(args)
         return run(args, factory)
     except (ValueError, OSError, KeyError) as error:
         print(f"Error: {error}", file=sys.stderr)

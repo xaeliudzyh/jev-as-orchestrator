@@ -7,10 +7,8 @@ from pathlib import Path
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from routing_bench.backends import openrouter_backend
-from routing_bench.cli import openrouter_parser
-from routing_bench.experiment import main
+from exp2.run_exp2 import main
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(openrouter_parser("exp2: subagent routing", "exp2"), openrouter_backend))
+    raise SystemExit(main(default_backend="openrouter"))

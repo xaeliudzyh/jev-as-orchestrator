@@ -7,6 +7,12 @@
 | exp1 | Выбрать первый skill для загрузки через get_skill | `data/skill_routing_exp1/`: 521 запрос, 64 кандидата | [Описание, метрики и запуск](exp1/README.md), `experiments/exp1/` |
 | exp2 | Выбрать субагента | `data/subagent_routing_exp2/`: по умолчанию 193 запроса, 17 включённых кандидатов; с `--include-disabled` — 199/21 | [Описание, модели и запуск](exp2/README.md), `experiments/exp2/` |
 
+Основной вход exp2 — `exp2/run_exp2.py`: по умолчанию два этапа с сохранением
+первых вызовов также в `experiments/exp2/1-step/`. Флаг `--one-step-only`
+отключает второй этап. Русская сценарная политика используется по умолчанию;
+английская — `--system-prompt exp2/routing_scenarios_en_exp2.txt`.
+Подробности, команды Jev/Luna и происхождение правил — в [exp2/README.md](exp2/README.md).
+
 Общие адаптеры моделей, движок оценки и CLI: `routing_bench/`.
 Файлы конкретного эксперимента имеют суффикс `_exp1` / `_exp2`.
 Старые корневые `run_hf.py` и `run_openrouter.py` перенесены в `exp1/`.
@@ -31,8 +37,9 @@ python -m pip install -r requirements.txt
 Проверка новых входов без API и весов:
 
 ```bash
-python exp2/run_openrouter_exp2.py --model typesafe/jev-1.14 --strategy 1-step --dry-run
-python exp2/run_hf_exp2.py --model Cloudflare/clef-flash --strategy 2-step --shortlist-k 3 --dry-run
+# Default: парные результаты 1-step/2-step, новый RU сценарный промпт.
+python3 exp2/run_exp2.py --model typesafe/jev-1.14 --dry-run
+python3 exp2/run_exp2.py --backend hf --model Cloudflare/clef-flash --shortlist-k 3 --dry-run
 python -m unittest discover -s tests -v
 ```
 

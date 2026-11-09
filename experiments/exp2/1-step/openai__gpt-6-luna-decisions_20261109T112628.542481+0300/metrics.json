@@ -1,0 +1,21 @@
+{
+  "n_samples": 193,
+  "hits": {
+    "accuracy@1": 106,
+    "accuracy@3": 144,
+    "accuracy@5": 150
+  },
+  "accuracy@1": 0.5492227979274611,
+  "accuracy@3": 0.7461139896373057,
+  "accuracy@5": 0.7772020725388601,
+  "status": "completed_with_errors",
+  "evaluated_stage": 1,
+  "n_samples_planned": 193,
+  "n_samples_unprocessed": 0,
+  "n_errors": 1,
+  "complete": true,
+  "missing_labels": [],
+  "n_unreachable_samples": 0,
+  "elapsed_seconds": 71.25753,
+  "error": null
+}

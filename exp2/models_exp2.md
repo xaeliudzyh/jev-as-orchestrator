@@ -71,7 +71,7 @@ Native API умеет JSON/text state, изображения и видео, н�
 «Покажи распределение агентных навыков по ролям в нашем блоке: сколько сотрудников
 на каждом уровне n1..n6 и средняя доля ИИ-кода».
 Эталон `agentic_skills` в запрос **не добавляется**. Код ниже строит настоящий
-первый запрос со всеми 21 точными descriptions без пересказа:
+первый запрос со всеми 17 включёнными точными descriptions без пересказа:
 
 ```python
 from pathlib import Path
@@ -79,7 +79,7 @@ from exp2.data_exp2 import load_bucket, load_subagents
 from routing_bench.experiment import make_payload
 
 root = Path("data/subagent_routing_exp2")
-sample = load_bucket(root / "subagents_routing_bucket.csv")[0]
+sample = load_bucket(root / "subagents_routing_bucket_only_enabled.csv")[0]
 candidates = load_subagents(root / "subagents_routing_corpus.csv")
 prompt = Path("exp2/routing_exp2.txt").read_text().strip()
 payload = make_payload("Cloudflare/clef-flash", prompt, sample, candidates,
@@ -94,17 +94,17 @@ questions.subagent.instructions: <полный routing_exp2.txt>
 questions.subagent.criteria:
   agentic_skills: <точная target_subagent_description>
   ai-coach:       <точная target_subagent_description>
-  ...ещё 19 вариантов...
+  ...ещё 15 вариантов...
 ```
 
 `model` заменяется на нужный ID. Имена — значения выбора, description — данные
 классификации, инструкция — задача маршрутизации, state — запрос пользователя.
 На stage 2 state и инструкция те же, а критерии выглядят так, если top-3
-первого шага оказался `agentic_skills`, `hrp-analytics`, `analytics`:
+первого шага оказался `agentic_skills`, `hrp-analytics`, `team_profile`:
 
 ```python
 by_name = {item.name: item for item in candidates}
-shortlist = [by_name[name] for name in ["agentic_skills", "hrp-analytics", "analytics"]]
+shortlist = [by_name[name] for name in ["agentic_skills", "hrp-analytics", "team_profile"]]
 stage2 = make_payload(payload["model"], prompt, sample, shortlist,
                       full=True, fields=[], question_id="subagent")
 # stage2["questions"]["subagent"]["criteria"]["agentic_skills"]
@@ -133,7 +133,7 @@ INSTRUCTION: <полный routing_exp2.txt>
 ALLOWED OPTIONS:
 OPTION 1: {"description":"<точное описание>","option_id":"agentic_skills"}
 OPTION 2: {"description":"<точное описание>","option_id":"ai-coach"}
-...21 вариант на первом шаге, 3/5 на втором...
+...17 включённых вариантов на первом шаге, 3/5 на втором...
 END FIELD
 <|im_end|>
 <|im_start|>assistant
@@ -155,7 +155,7 @@ Assistant suffix здесь — часть входного шаблона, не
       "type": "choice",
       "choice": "agentic_skills",
       "confidence": 0.7,
-      "probabilities": {"agentic_skills": 0.7, "hrp-analytics": 0.2, "analytics": 0.1}
+      "probabilities": {"agentic_skills": 0.7, "hrp-analytics": 0.2, "team_profile": 0.1}
     }
   },
   "usage": {"input_tokens": 1234, "output_tokens": 0}
@@ -226,3 +226,10 @@ head и attention workspace; полный длинный input дороже ко
 head остаётся в dtype. Это предусмотренный раннером режим, ещё не подтверждённый
 GPU smoke run с данными весами. Версии CUDA/torch/bitsandbytes должны поддерживать
 5060 Ti. Квантование способно менять ranking: сравнивай такие результаты отдельно.
+
+
+С 05.11.2026 default exp2 использует bucket_only_enabled и corpus[enabled=1].
+После отключения analytics 09.11.2026 это 193 запроса и 17 кандидатов.
+Примеры выше соответствуют этому режиму. Для прежнего полного каталога
+используй --include-disabled; в Python — load_subagents(..., include_disabled=True)
+и исходный subagents_routing_bucket. enabled не передаётся модели как criterion.

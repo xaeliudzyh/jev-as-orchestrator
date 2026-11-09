@@ -1,27 +1,84 @@
 # exp2: subagent routing
 
-199 запросов из `data/subagent_routing_exp2/subagents_routing_bucket.csv` и
-21 субагент из `subagents_routing_corpus.csv` той же директории. Оба файла можно
-заменить их `.jsonl` копиями через `--bucket` и `--corpus`. CSV: UTF-8 с BOM,
-разделитель `;`, многострочные ячейки читаются штатным CSV parser.
+По умолчанию используются **193 запроса** из
+`data/subagent_routing_exp2/subagents_routing_bucket_only_enabled.csv` и
+**17 включённых субагентов** из `subagents_routing_corpus.csv`, отфильтрованного
+по `enabled=1`. Полная корзина `subagents_routing_bucket.csv` (199 запросов)
+и полный каталог (21 субагент) остаются доступными через `--include-disabled`.
 
-Корзина содержит `Вопрос в новой корзине`, `skill_name`, `SubAgent`.
+CSV: UTF-8 с BOM, разделитель `;`, многострочные ячейки читаются штатным CSV parser.
+Любой CSV можно заменить соответствующей `.jsonl` копией через `--bucket` / `--corpus`.
+Корзины содержат `Вопрос в новой корзине`, `skill_name`, `SubAgent`.
 Каталог содержит `target_subagent`, `target_subagent_description`,
-`target_subagent_full_text`. `SubAgent` — единственная эталонная метка;
-`skill_name` сохраняется только для происхождения примера и не участвует в выборе.
-Каталог уже подготовлен из AGENTS.md: в full text оставлены front matter
-`name`, `description` и исходное тело. Раннер не реконструирует его из agents/.
+`target_subagent_full_text`, **`enabled`**. В JSONL enabled — целое число 0/1,
+в CSV — значение 0/1. Иные значения, пропущенная колонка и дубли имён отклоняются.
 
-Варианты без примеров остаются конкурентами: meetings, metrics, outstaff,
-people-search, react-analytics, recruiter-brief, service_navigation.
-Метки всех 199 запросов существуют в каталоге. Скрытые настройки `enabled`,
-внутренние skills субагентов и их runtime gates не фильтруют каталог.
+`enabled` взят из YAML front matter исходных `agents/*/AGENTS.md`: true → 1,
+false → 0. Для `mcp_internet` установлен 1 по явному правилу пользователя,
+несмотря на отсутствие поля в его AGENTS.md. Дополнительно по решению пользователя
+от 09.11.2026 для устаревшего **analytics** установлен enabled=0 в каталоге.
+Его исходный AGENTS.md сохранён; CSV/JSONL являются источником enabled для раннера.
+Выключены **analytics**, **interview**, **people-search**, **react-analytics**.
+Из исходной корзины исключены 4 запроса с эталоном analytics и 2 с эталоном interview;
+у people-search и react-analytics эталонных примеров нет. Порядок и все ячейки оставшихся строк сохранены.
+Оригинальная корзина не изменена. `sample_id` — индекс в выбранном файле корзины;
+после удаления строк эти индексы могут отличаться от старого полного прогона.
+
+`SubAgent` — единственная эталонная метка. `skill_name` сохраняется только для
+происхождения примера. `enabled` управляет фильтрацией и сохраняется в metadata
+снимка каталога, но не добавляется в state/description/full text, передаваемые модели.
+В full text по-прежнему только front matter name/description и исходное тело AGENTS.md.
+Исходные AGENTS.md раннер во время запуска не читает: актуальные значения enabled
+должны находиться в CSV/JSONL каталога.
+
+Включённые кандидаты без примеров также участвуют: meetings, metrics, outstaff,
+recruiter-brief, service_navigation. Фильтрация не зависит от наличия gold-примеров.
+Другие runtime-настройки, включая scope, и внутренние skills каталог не фильтруют.
+
+## Выбор корзины и кандидатов
+
+- Без дополнительных флагов: `bucket_only_enabled.csv` и `corpus[enabled=1]`.
+- `--include-disabled`: исходный `bucket.csv` и полный corpus, включая enabled=0.
+- `--bucket PATH` и `--corpus PATH` заменяют соответствующие пути. Явный --bucket
+  имеет приоритет над выбором файла по умолчанию, в том числе с --include-disabled.
+- Без --include-disabled из явно выбранной корзины дополнительно удаляются строки
+  с эталонами выключенных субагентов известного каталога. Неизвестные метки
+  не удаляются молча: они подчиняются --missing-labels (по умолчанию error).
+- Фильтрация выполняется до shuffle, offset и limit. Режим, исключённые кандидаты,
+  число строк до фильтрации и IDs исключённых строк сохраняются в config.json.
+
+Команды для только включённых (из корня репозитория):
+
+```bash
+# 1-step: все 17 включённых кандидатов, метрики @1/@3/@5 автоматически.
+python3 exp2/run_openrouter_exp2.py --model typesafe/jev-1.14 --strategy 1-step
+python3 exp2/run_openrouter_exp2.py --model openai/gpt-6-luna-decisions --strategy 1-step
+
+# 2-step: descriptions 17 включённых → top-5 → полные тексты этих пяти.
+python3 exp2/run_openrouter_exp2.py --model typesafe/jev-1.14 --strategy 2-step --shortlist-k 5
+python3 exp2/run_openrouter_exp2.py --model openai/gpt-6-luna-decisions --strategy 2-step --shortlist-k 5
+```
+
+Прежний режим со всеми 199 запросами / 21 кандидатом:
+
+```bash
+python3 exp2/run_openrouter_exp2.py --model typesafe/jev-1.14 --strategy 1-step --include-disabled
+python3 exp2/run_openrouter_exp2.py --model openai/gpt-6-luna-decisions --strategy 2-step --shortlist-k 5 --include-disabled
+```
+
+Тот же полный режим с явными путями к JSONL:
+
+```bash
+python3 exp2/run_openrouter_exp2.py --model typesafe/jev-1.14 --strategy 1-step --include-disabled \
+  --bucket data/subagent_routing_exp2/subagents_routing_bucket.jsonl \
+  --corpus data/subagent_routing_exp2/subagents_routing_corpus.jsonl
+```
 
 ## Стратегии
 
 - **1-step:** один вызов; `state.query` — только пользовательский вопрос,
   `questions.subagent.instructions` — `exp2/routing_exp2.txt`, `criteria` —
-  имя каждого из 21 субагентов → точная строка `target_subagent_description`.
+  имя каждого включённого субагента (17 по умолчанию) → точная строка `target_subagent_description`.
   Никакой JSON-обёртки с title/tags и добавления полного текста на первом шаге.
 - **2-step:** такой же первый вызов, сортировка полного распределения,
   shortlist из первых `--shortlist-k 3|5`. Второй независимый вызов с тем же
@@ -128,7 +185,7 @@ Endpoint должен действительно поддерживать Clef j
 `accuracy@1/3/5` — per-sample hit@k, от 0 до 1; ошибки считаются промахами.
 Для 2-step это итог **второго** вызова, дополнительно есть `stage_1_metrics` и
 `shortlist_hit_rate`. При shortlist=3 значения @3 и @5 совпадают. Stage-2
-вероятности условны на shortlist и не сравнимы напрямую с вероятностями среди 21.
+вероятности условны на shortlist и не сравнимы напрямую с вероятностями среди полного списка кандидатов первого шага.
 При нескольких допустимых метках общий движок считает успех по любой из них;
 в текущем bucket SubAgent содержит одну метку, строка не делится по запятым.
 
@@ -145,4 +202,6 @@ python -m unittest discover -s tests -v
 
 Dry-run проверяет данные/формирование входа без ключей, скачивания весов и API.
 Он не проверяет доступность endpoint, лимиты его токенизатора и GPU-совместимость.
-Запуски с реальными новыми моделями пока не проводились, метрик exp2 ещё нет.
+Первые реальные 1-step прогоны Jev/Luna выполнены на полном каталоге 199/21.
+Их нельзя выдавать за метрики нового режима 193/17: изменение конкурирующих
+вариантов требует нового инференса.

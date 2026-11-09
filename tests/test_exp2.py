@@ -12,7 +12,7 @@ from unittest.mock import Mock, patch
 from exp2.data_exp2 import BUCKET_FIELDS, CORPUS_FIELDS, load_bucket, load_subagents
 from routing_bench.backends import HTTPBackend, LocalBackend
 from routing_bench.clef import CLEF_REVISIONS, ClefRuntime
-from routing_bench.experiment import accuracy, common_parser, run
+from routing_bench.experiment import ROOT, accuracy, common_parser, run
 
 
 class SubagentTests(unittest.TestCase):
@@ -21,7 +21,7 @@ class SubagentTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.catalog = [{"target_subagent": name, "target_subagent_description": f"Exact description {name}\nsecond line",
-                         "target_subagent_full_text": f"---\nname: {name}\ndescription: Exact description\n---\nFULL {name}"}
+                         "enabled": 1, "target_subagent_full_text": f"---\nname: {name}\ndescription: Exact description\n---\nFULL {name}"}
                         for name in "abcdef"]
         self.bucket = [{"Вопрос в новой корзине": "user question", "skill_name": "SECRET_GOLD_SKILL", "SubAgent": "f"}]
         for stem, rows, fields in (("catalog", self.catalog, CORPUS_FIELDS), ("bucket", self.bucket, BUCKET_FIELDS)):
@@ -161,6 +161,83 @@ class SubagentTests(unittest.TestCase):
         self.assertEqual(code, 0)
         backend.assert_not_called()
         self.assertEqual(len(json.loads((folder / "request_preview.json").read_text())["questions"]["subagent"]["criteria"]), 6)
+
+    def disable(self, *names):
+        for row in self.catalog:
+            row["enabled"] = int(row["target_subagent"] not in names)
+        (self.root / "catalog.jsonl").write_text("\n".join(json.dumps(row) for row in self.catalog))
+
+    def test_enabled_filters_candidates_but_preserves_raw_text(self):
+        self.disable("a", "f")
+        enabled = load_subagents(self.root / "catalog.jsonl")
+        full = load_subagents(self.root / "catalog.jsonl", include_disabled=True)
+        self.assertEqual([x.name for x in enabled], list("bcde"))
+        self.assertEqual([x.name for x in full], list("abcdef"))
+        self.assertEqual(full[0].metadata["enabled"], 0)
+        self.assertEqual(enabled[0].description(False, []), self.catalog[1]["target_subagent_description"])
+        self.assertEqual(enabled[0].description(True, []), self.catalog[1]["target_subagent_full_text"])
+
+    def test_disabled_gold_rows_removed_before_limit_and_both_stages(self):
+        self.disable("a", "f")
+        rows = [self.bucket[0], {**self.bucket[0], "SubAgent": "b", "Вопрос в новой корзине": "enabled question"}]
+        (self.root / "bucket.jsonl").write_text("\n".join(json.dumps(row) for row in rows))
+        calls = []
+        def backend(payload):
+            calls.append(payload)
+            criteria = payload["questions"]["subagent"]["criteria"]
+            self.assertNotIn("a", criteria)
+            self.assertNotIn("f", criteria)
+            return {"answers": {"subagent": {"choice": "b", "probabilities": {name: float(name == "b") for name in criteria}}}}
+        code, folder = self.execute(backend, "--bucket", str(self.root / "bucket.jsonl"), "--limit", "1")
+        self.assertEqual(code, 0)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(len(calls[0]["questions"]["subagent"]["criteria"]), 4)
+        self.assertEqual(len(calls[1]["questions"]["subagent"]["criteria"]), 3)
+        self.assertEqual(calls[0]["state"]["query"], "enabled question")
+        config = json.loads((folder / "config.json").read_text())
+        self.assertEqual(config["excluded_disabled_sample_ids"], [0])
+        self.assertEqual(config["excluded_subagents"], ["a", "f"])
+        self.assertEqual(config["n_bucket_samples_before_enabled_filter"], 2)
+        self.assertEqual(config["sample_ids"], [1])
+        self.assertEqual(json.loads((folder / "metrics.json").read_text())["n_samples"], 1)
+
+    def test_include_disabled_restores_candidate_and_gold(self):
+        self.disable("a", "f")
+        backend = Mock(return_value={"answers": {"subagent": {"choice": "f", "probabilities": {name: float(name == "f") for name in "abcdef"}}}})
+        code, folder = self.execute(backend, "--include-disabled", "--strategy", "1-step")
+        self.assertEqual(code, 0)
+        self.assertEqual(len(backend.call_args.args[0]["questions"]["subagent"]["criteria"]), 6)
+        config = json.loads((folder / "config.json").read_text())
+        self.assertTrue(config["include_disabled"])
+        self.assertEqual(config["excluded_subagents"], [])
+        self.assertEqual(config["excluded_disabled_sample_ids"], [])
+        self.assertEqual(json.loads((folder / "metrics.json").read_text())["accuracy@1"], 1)
+
+    def test_default_bucket_switches_with_include_disabled(self):
+        for include_disabled in (False, True):
+            with self.subTest(include_disabled=include_disabled):
+                args = self.args("--dry-run")
+                args.bucket = None
+                args.include_disabled = include_disabled
+                args.output_dir = self.root / str(include_disabled)
+                with patch("exp2.data_exp2.load_bucket", return_value=[{"sample_id": 0, "question": "q", "expected_subagents": ["b"]}]) as loader:
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        self.assertEqual(run(args, Mock(side_effect=AssertionError("no inference"))), 0)
+                name = "subagents_routing_bucket.csv" if include_disabled else "subagents_routing_bucket_only_enabled.csv"
+                loader.assert_called_once_with(ROOT / "data/subagent_routing_exp2" / name)
+
+    def test_invalid_enabled_and_missing_column_rejected(self):
+        path = self.root / "invalid.jsonl"
+        for value in (True, False, "1", "0", 2, None, []):
+            with self.subTest(value=value):
+                rows = [{**self.catalog[0], "enabled": value}, self.catalog[1]]
+                path.write_text("\n".join(json.dumps(row) for row in rows))
+                with self.assertRaisesRegex(ValueError, "enabled"):
+                    load_subagents(path, include_disabled=True)
+        rows = [{k:v for k,v in row.items() if k != "enabled"} for row in self.catalog]
+        path.write_text("\n".join(json.dumps(row) for row in rows))
+        with self.assertRaisesRegex(ValueError, "columns"):
+            load_subagents(path)
 
     def test_hit_at_k_multi_label_semantics(self):
         metrics = accuracy([{"ranking": ["x", "b", "a"], "expected_subagents": ["a", "b"]},

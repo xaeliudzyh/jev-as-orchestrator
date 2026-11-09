@@ -1,0 +1,33 @@
+{
+  "n_samples": 197,
+  "hits": {
+    "accuracy@1": 99,
+    "accuracy@3": 138,
+    "accuracy@5": 150
+  },
+  "accuracy@1": 0.5025380710659898,
+  "accuracy@3": 0.700507614213198,
+  "accuracy@5": 0.7614213197969543,
+  "status": "completed_with_errors",
+  "evaluated_stage": 2,
+  "n_samples_planned": 197,
+  "n_samples_unprocessed": 0,
+  "n_errors": 3,
+  "complete": true,
+  "missing_labels": [],
+  "n_unreachable_samples": 0,
+  "elapsed_seconds": 240.68507,
+  "error": null,
+  "stage_1_metrics": {
+    "n_samples": 197,
+    "hits": {
+      "accuracy@1": 85,
+      "accuracy@3": 139,
+      "accuracy@5": 153
+    },
+    "accuracy@1": 0.43147208121827413,
+    "accuracy@3": 0.7055837563451777,
+    "accuracy@5": 0.7766497461928934
+  },
+  "shortlist_hit_rate": 0.7766497461928934
+}

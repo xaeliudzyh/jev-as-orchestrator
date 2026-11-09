@@ -5,7 +5,7 @@
 | Эксперимент | Задача | Данные | Код и результаты |
 | --- | --- | --- | --- |
 | exp1 | Выбрать первый skill для загрузки через get_skill | `data/skill_routing_exp1/`: 521 запрос, 64 кандидата | [Описание, метрики и запуск](exp1/README.md), `experiments/exp1/` |
-| exp2 | Выбрать субагента | `data/subagent_routing_exp2/`: 199 запросов, 21 кандидат | [Описание, модели и запуск](exp2/README.md), `experiments/exp2/` |
+| exp2 | Выбрать субагента | `data/subagent_routing_exp2/`: по умолчанию 193 запроса, 17 включённых кандидатов; с `--include-disabled` — 199/21 | [Описание, модели и запуск](exp2/README.md), `experiments/exp2/` |
 
 Общие адаптеры моделей, движок оценки и CLI: `routing_bench/`.
 Файлы конкретного эксперимента имеют суффикс `_exp1` / `_exp2`.
@@ -36,6 +36,7 @@ python exp2/run_hf_exp2.py --model Cloudflare/clef-flash --strategy 2-step --sho
 python -m unittest discover -s tests -v
 ```
 
-Прогоны exp2 пока не выполнены: dry-run сохраняет только снимки данных, конфиг
-и пример запроса, а accuracy остаётся null. Историческая таблица exp1 находится
+Dry-run сохраняет только снимки данных, конфиг
+и пример запроса, а accuracy остаётся null. Первые реальные прогоны exp2
+сохранены для полного каталога; новые прогоны по умолчанию используют только enabled=1. Историческая таблица exp1 находится
 в [exp1/README.md](exp1/README.md#результаты-skill-routing).

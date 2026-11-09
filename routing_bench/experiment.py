@@ -89,7 +89,10 @@ def common_parser(description, experiment="exp1"):
         parser.add_argument("--skills-dir", type=Path, default=ROOT / "data/skill_routing_exp1/skills")
         parser.add_argument("--metadata-fields", nargs="+", choices=METADATA_FIELDS, default=list(METADATA_FIELDS))
     else:
-        parser.add_argument("--bucket", type=Path, default=ROOT / "data/subagent_routing_exp2/subagents_routing_bucket.csv")
+        parser.add_argument("--bucket", type=Path,
+                            help="Question bucket CSV/JSONL; default: bucket_only_enabled, or original bucket with --include-disabled")
+        parser.add_argument("--include-disabled", action="store_true",
+                            help="Use all subagents, including enabled=0; default bucket becomes the original unfiltered bucket")
         parser.add_argument("--corpus", type=Path, default=ROOT / "data/subagent_routing_exp2/subagents_routing_corpus.csv",
                             help="Subagent catalog: descriptions and full texts, not the question bucket")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "experiments" / experiment)
@@ -137,7 +140,19 @@ def run(args, factory) -> int:
     expected_field = "expected_subagents" if experiment == "exp2" else "expected_skills"
     if experiment == "exp2":
         from exp2.data_exp2 import load_bucket, load_subagents
-        skills, all_samples = load_subagents(args.corpus), load_bucket(args.bucket)
+        if args.bucket is None:
+            bucket_name = "subagents_routing_bucket" if args.include_disabled else "subagents_routing_bucket_only_enabled"
+            args.bucket = ROOT / "data/subagent_routing_exp2" / f"{bucket_name}.csv"
+        catalog = load_subagents(args.corpus, include_disabled=True)
+        disabled_names = {item.name for item in catalog if item.metadata["enabled"] == 0}
+        skills = catalog if args.include_disabled else [item for item in catalog if item.metadata["enabled"] == 1]
+        if len(skills) < 2:
+            raise ValueError("Expected at least 2 eligible subagents")
+        bucket_samples = load_bucket(args.bucket)
+        excluded_samples = [] if args.include_disabled else [row["sample_id"] for row in bucket_samples
+            if set(row[expected_field]) <= disabled_names]
+        excluded_ids = set(excluded_samples)
+        all_samples = [row for row in bucket_samples if row["sample_id"] not in excluded_ids]
     else:
         skills, all_samples = load_skills(args.skills_dir), load_corpus(args.corpus)
     rng = random.Random(args.seed)
@@ -185,11 +200,17 @@ def run(args, factory) -> int:
         "source_sha256": {str(p.relative_to(ROOT)): sha256_bytes(p.read_bytes())
                           for p in sorted([*ROOT.glob(f"{experiment}/*.py"), *ROOT.glob("routing_bench/*.py")])}}
     if experiment == "exp2":
-        config["input_structure"]["corpus"] = {"catalog": "target_subagent, target_subagent_description, target_subagent_full_text",
+        config["input_structure"]["corpus"] = {"catalog": "target_subagent, target_subagent_description, target_subagent_full_text, enabled",
                                                 "bucket": "Вопрос в новой корзине, skill_name, SubAgent"}
         config["input_structure"]["stage_1"]["criteria"] = "subagent name -> exact raw target_subagent_description"
         config["input_structure"]["stage_2"]["criteria"] = "top-k subagent name -> exact target_subagent_full_text"
         config["bucket_sha256"] = sha256_bytes(args.bucket.read_bytes())
+        config["include_disabled"] = args.include_disabled
+        config["n_catalog_subagents"] = len(catalog)
+        config["excluded_subagents"] = [] if args.include_disabled else sorted(disabled_names)
+        config["n_bucket_samples_before_enabled_filter"] = len(bucket_samples)
+        config["excluded_disabled_sample_ids"] = excluded_samples
+        config["input_structure"]["candidate_filter"] = "all" if args.include_disabled else "enabled == 1"
         config["metadata_fields"] = None
         config["n_subagents"] = config.pop("n_skills")
     dump(folder / "config.json", config)

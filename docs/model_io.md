@@ -6,7 +6,7 @@
 Мы используем только `choice`, хотя SDK поддерживают и другие типы вопросов.
 
 Описанный ниже пример относится к **exp1**. В **exp2** используется тот же native
-choice API, но ID вопроса `subagent`, 21 кандидат вместо 64, а значения criteria —
+choice API, но ID вопроса `subagent`, по умолчанию 17 включённых кандидатов вместо 64, а значения criteria —
 точные raw descriptions из `data/subagent_routing_exp2/subagents_routing_corpus.csv`.
 Эталон `expected_subagents` и source skill_name не передаются модели.
 Stage 2 получает полные тексты только выбранных 3/5 субагентов.

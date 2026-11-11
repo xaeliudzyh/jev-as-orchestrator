@@ -169,7 +169,7 @@ def load_view(folder, config, metrics):
 
 def collect(root, bucket, corpus):
     bucket_hash, corpus_hash = digest(bucket), digest(corpus)
-    prompt_hashes = {name: hashlib.sha256((root / "exp2" / name).read_text(encoding="utf-8").strip().encode()).hexdigest()
+    prompt_hashes = {name: hashlib.sha256((root / "exp2" / "prompts" / name).read_text(encoding="utf-8").strip().encode()).hexdigest()
                      for name in PROMPTS}
     selected, exclusions = {}, []
     for path in sorted((root / "experiments/exp2").glob("*/*/config.json")):

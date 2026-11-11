@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "successful_author_model_call": true,
+  "split_seed": 42,
+  "author_input_sha256": "ca7093e3550169d8286f162c0e72f3ef22636ec1678f978c2ac744dda74b4149",
+  "author_input_examples": 135,
+  "static_candidates": 17,
+  "history": "fresh CLI, no resume/fork; fresh HOME/CODEX_HOME; ignore user config/rules; no daemon",
+  "allowed_task_data": "only serialized author_train_input.json in stdin",
+  "excluded": "test questions/labels/manifest, prior prompts, historical predictions/metrics, chat history, skill_name",
+  "os_isolation": "Linux Landlock filesystem allowlist; host UNIX IPC blocked via seccomp; no inherited env/non-stdio fds; TCP limited to 443",
+  "canary_checks_passed": [
+    "full original bucket denied",
+    "heldout test CSV denied",
+    "previous scenario prompt denied",
+    "original Codex config denied",
+    "host AF_UNIX socket creation denied"
+  ],
+  "author_tools": "Disabled shell/apps/plugins/multi_agent/memories/skill_search/hooks and web; task forbids tools; successful trace confirms zero tool events",
+  "initial_attempt": "No result; workspace routing discovery failed. Trace had zero tool calls. Escalated HTTPS retry was rejected by automatic review for missing explicit transfer consent.",
+  "external_transfer_consent": "Explicit user reply: Разрешаю отправить train и каталог в OpenAI",
+  "author_tool_events": [],
+  "author_default_model": "CLI default, not explicitly overridden; exact model id not exposed in JSONL",
+  "author_task_sha256": "220e35778d3e41bec87a69125aafa0dba9dfeedb9083326f9cef0e823d8ae1b3",
+  "author_output_sha256": "1bd9ba32e0adf2643026e1a792c8aba2144cc3669bcd3b5f91537fe12c61d6b6",
+  "system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+  "prompt_edited_after_author": false,
+  "completed_at": "2026-11-11T11:52:54.965348+03:00"
+}

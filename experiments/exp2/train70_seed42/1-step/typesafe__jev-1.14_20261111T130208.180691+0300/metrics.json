@@ -1,0 +1,29 @@
+{
+  "n_samples": 193,
+  "hits": {
+    "accuracy@1": 180,
+    "accuracy@3": 193,
+    "accuracy@5": 193
+  },
+  "accuracy@1": 0.9326424870466321,
+  "accuracy@3": 1.0,
+  "accuracy@5": 1.0,
+  "status": "completed",
+  "evaluated_stage": 1,
+  "n_samples_planned": 193,
+  "n_samples_unprocessed": 0,
+  "n_errors": 0,
+  "complete": true,
+  "missing_labels": [],
+  "n_unreachable_samples": 0,
+  "elapsed_seconds": 61.93259265499182,
+  "inference_seconds": 61.93259265499182,
+  "stage_inference_seconds": {
+    "1": 61.93259265499182
+  },
+  "timing_scope": "sum_of_recorded_stage_1_calls_in_shared_pipeline",
+  "pipeline_elapsed_seconds": 138.911851,
+  "pipeline_status": "completed",
+  "pipeline_error": null,
+  "error": null
+}

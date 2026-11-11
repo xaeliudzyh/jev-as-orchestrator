@@ -36,7 +36,7 @@ from pathlib import Path
 from routing_bench.data import load_skills
 
 state = {"query": "мои делегирования"}
-prompt = Path("exp1/routing_exp1.txt").read_text(encoding="utf-8").strip()
+prompt = Path("exp1/prompts/routing_exp1.txt").read_text(encoding="utf-8").strip()
 skills = load_skills(Path("data/skill_routing_exp1/skills"))
 criteria = {
     s.name: s.description(False, ["name", "title", "description", "tags"])

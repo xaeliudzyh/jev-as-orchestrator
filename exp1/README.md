@@ -4,6 +4,8 @@
 Два раннера: `exp1/run_openrouter_exp1.py` для Jev через OpenRouter и `exp1/run_hf_exp1.py`
 для открытых моделей с Hugging Face, локально или через API.
 
+Промпт эксперимента: [prompts/routing_exp1.txt](prompts/routing_exp1.txt).
+
 ## Результаты skill routing
 
 `1-step` — выбор по метаданным всех 64 скиллов; `2-step` — отбор top-k по
@@ -103,7 +105,7 @@ FRIDA/Decider. Этот requirements устанавливает базовый r
 
 ```bash
 python exp1/run_openrouter_exp1.py --model typesafe/jev-1.13 --strategy 1-step \
-  --system-prompt exp1/routing_exp1.txt
+  --system-prompt exp1/prompts/routing_exp1.txt
 ```
 
 Двухшаговый Jev: top-5 по метаданным, затем новое решение по полным текстам этих пяти скиллов.
@@ -111,7 +113,7 @@ python exp1/run_openrouter_exp1.py --model typesafe/jev-1.13 --strategy 1-step \
 
 ```bash
 python exp1/run_openrouter_exp1.py --model typesafe/jev-1.13 --strategy 2-step \
-  --shortlist-k 5 --system-prompt exp1/routing_exp1.txt
+  --shortlist-k 5 --system-prompt exp1/prompts/routing_exp1.txt
 ```
 
 Локальные открытые модели на GPU:
@@ -119,14 +121,14 @@ python exp1/run_openrouter_exp1.py --model typesafe/jev-1.13 --strategy 2-step \
 ```bash
 python exp1/run_hf_exp1.py --model ai-forever/FRIDA-Decisions --mode local \
   --strategy 2-step --shortlist-k 5 --device cuda --dtype bfloat16 \
-  --system-prompt exp1/routing_exp1.txt
+  --system-prompt exp1/prompts/routing_exp1.txt
 
 python exp1/run_hf_exp1.py --model Mapika/decider-2b --mode local \
-  --strategy 1-step --device cuda --system-prompt exp1/routing_exp1.txt
+  --strategy 1-step --device cuda --system-prompt exp1/prompts/routing_exp1.txt
 
 python exp1/run_hf_exp1.py --model jaredpalmer/kev-4b --mode local \
   --strategy 2-step --shortlist-k 3 --device cuda --dtype bfloat16 \
-  --system-prompt exp1/routing_exp1.txt
+  --system-prompt exp1/prompts/routing_exp1.txt
 
 python exp1/run_hf_exp1.py --model LIQIIIII/Jeva-4B --mode local \
   --strategy 1-step --device cuda --dtype bfloat16
@@ -187,7 +189,7 @@ python exp1/run_hf_exp1.py --model ai-forever/FRIDA-Decisions --strategy 2-step 
 python exp1/run_hf_exp1.py --model ai-forever/FRIDA-Decisions --mode api \
   --endpoint https://YOUR-ENDPOINT.endpoints.huggingface.cloud \
   --api-format hf-handler --strategy 2-step --shortlist-k 5 \
-  --system-prompt exp1/routing_exp1.txt
+  --system-prompt exp1/prompts/routing_exp1.txt
 ```
 
 Тело запроса — `{"inputs": {"model": "...", "state": {}, "questions": {}}}`.

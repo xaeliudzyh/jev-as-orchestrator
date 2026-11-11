@@ -81,7 +81,7 @@ from routing_bench.experiment import make_payload
 root = Path("data/subagent_routing_exp2")
 sample = load_bucket(root / "subagents_routing_bucket_only_enabled.csv")[0]
 candidates = load_subagents(root / "subagents_routing_corpus.csv")
-prompt = Path("exp2/routing_exp2.txt").read_text().strip()
+prompt = Path("exp2/prompts/routing_exp2.txt").read_text().strip()
 payload = make_payload("Cloudflare/clef-flash", prompt, sample, candidates,
                        full=False, fields=[], question_id="subagent")
 ```

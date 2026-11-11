@@ -1,7 +1,7 @@
 # Сценарная политика exp2: обоснование
 
 Версия от 09.11.2026. Политика добавлена в
-[RU](routing_scenarios_ru_exp2.txt) и [EN](routing_scenarios_en_exp2.txt).
+[RU](prompts/routing_scenarios_ru_exp2.txt) и [EN](prompts/routing_scenarios_en_exp2.txt).
 Обе версии описывают одинаковое правило выбора владельца маршрута.
 Исходные descriptions, полные тексты агентов и эталоны сохранены.
 
@@ -67,8 +67,8 @@ sample_id, skill_name или скрытый контекст пользоват�
 показывает спорные gold-попадания и существенную подгонку правил по эталонам.
 Поскольку эти 193 вопроса использованы для выбора правил, результат относится
 к данным разработки. Общие варианты без фиксированных маршрутов:
-[routing_general_ru_exp2.txt](routing_general_ru_exp2.txt) и
-[routing_general_en_exp2.txt](routing_general_en_exp2.txt). Для оценки
+[routing_general_ru_exp2.txt](prompts/routing_general_ru_exp2.txt) и
+[routing_general_en_exp2.txt](prompts/routing_general_en_exp2.txt). Для оценки
 переноса нужен отдельный набор, особенно с похожими, но разными намерениями:
 профиль/пригодность, существующий/новый преемник, ссылка/материалы/назначения,
 командные теги/общая HR-аналитика, создание/изменение встречи.

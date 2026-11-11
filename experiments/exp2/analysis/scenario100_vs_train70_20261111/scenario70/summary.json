@@ -1,0 +1,2621 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-11-11T10:38:09.633488+00:00",
+  "runs_root": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42",
+  "complete": true,
+  "scope": {
+    "models": {
+      "typesafe/jev-1.14": "Jev 1.14",
+      "openai/gpt-6-luna-decisions": "Luna"
+    },
+    "stages": {
+      "1-step": 1,
+      "2-step": 2
+    },
+    "n_candidates": 17,
+    "subset_sizes": {
+      "full": 193,
+      "train": 135,
+      "test": 58
+    }
+  },
+  "expected_results": 4,
+  "prompt_evaluation": "train70",
+  "evaluation_status": "train70_frozen_split",
+  "evaluation_caveat": "Integrity checks do not establish train-only prompt authorship or absence of historical exposure.",
+  "selection_rule": "Latest complete eligible started_at per model/stage; path breaks timestamp ties; never by score",
+  "metric_definition": "Per-sample hit@1/3/5; k clipped to ranking; every non-ok response is a miss; no confidence cutoff",
+  "macro_definition": "Unweighted mean of class hit@1 over gold classes observed in each subset",
+  "frozen": {
+    "split_dir": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/data/subagent_routing_exp2/splits/stratified70_seed42",
+    "manifest_path": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/data/subagent_routing_exp2/splits/stratified70_seed42/manifest.json",
+    "manifest_sha256": "378c2e6199602b77f38c3945991ea8044ec79895d656cf7d236e7e31089bf0b5",
+    "files_sha256": {
+      "author_train_input.json": "ca7093e3550169d8286f162c0e72f3ef22636ec1678f978c2ac744dda74b4149",
+      "bucket_full.csv": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "bucket_full.jsonl": "eb35170b9d9f95ae55317c06b74b618ca57c219f300d8312d3a35869b5030157",
+      "bucket_test.csv": "853ca2543e82e829a9385010905d63032760811c6643e4254c28529d1658a0e6",
+      "bucket_test.jsonl": "7cfbca768921aae8070562215b2d6b52174431a4138a5beab7afcf548b9ef546",
+      "bucket_train.csv": "2e420289927cb327c0ebe04980aab74e0c102914f3d447d50e9be0e11bd11bfb",
+      "bucket_train.jsonl": "fc01343e51d861308d496c6a9677d6c6414db25bae6a85a0928d12e787aac061",
+      "catalog_enabled.jsonl": "b9d72ed1398d2360ea35212d669dd7ca37dde5a91f2ca718ee331c092a7eaee0"
+    },
+    "source_corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd",
+    "prompt_path": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/exp2/routing_train70_ru_exp2.txt",
+    "system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+    "raw_prompt_file_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+    "prompt_freeze_path": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/data/subagent_routing_exp2/splits/stratified70_seed42/prompt_freeze.json",
+    "prompt_freeze_sha256": "8fdbaad0ee3d1b54ec75947312115983971b684447545745845c453b3d32027f",
+    "prompt_evaluation": "train70",
+    "prompt_freeze_enforced": true,
+    "prompt_freeze_system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff"
+  },
+  "selected": [
+    {
+      "model": "openai/gpt-6-luna-decisions",
+      "model_label": "Luna",
+      "strategy": "1-step",
+      "stage": 1,
+      "source_folder": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/1-step/openai__gpt-6-luna-decisions_20261111T130507.262036+0300",
+      "run_id": "openai__gpt-6-luna-decisions_20261111T130507.262036+0300",
+      "started_at": "2026-11-11T13:05:07.262036+03:00",
+      "finished_at": "2026-11-11T13:08:07.207650+03:00",
+      "artifact_origin": "shared_stage_1",
+      "pipeline_status": "completed",
+      "paired_artifact_dir": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/2-step/openai__gpt-6-luna-decisions_20261111T130507.262036+0300",
+      "system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd",
+      "candidate_order": [
+        "agentic_skills",
+        "ai-coach",
+        "education",
+        "grill",
+        "hrp-analytics",
+        "mcp_internet",
+        "meetings",
+        "metrics",
+        "onboarding_top_600",
+        "outstaff",
+        "recruiter",
+        "recruiter-brief",
+        "service_navigation",
+        "talent-research",
+        "team_profile",
+        "top600-successor-rotation",
+        "vacation"
+      ],
+      "shortlist_k": null,
+      "source_files_sha256": {
+        "config.json": "4ea6240b9c74359557c1883b3fa43a0411492fa0de68ce85279b6a2e1a5a89d0",
+        "metrics.json": "d98dc8e6da46cc9058d95931f528a3d91152f1314b17282aedf2280cf97c1bf5",
+        "samples.json": "0d53b5a24b2f4a787b1ec7eb07bc4c52e8ee575d96ab1f735f679c91076851e5",
+        "subagents.json": "c165fb7a917422855807750c2ba0a02577153c600e5f3190c818237de919fff5",
+        "stage_1_winners.jsonl": "3d6447b8a9b809606a2b729065a5fa80d272e0e98e50fb8bd8ac8aeba5ab3825",
+        "stage_1_details.jsonl": "1ccc86e162de0431999ad1e8820f22d39d8846d692a7012bed110497f8adb03f"
+      },
+      "metrics": {
+        "full": {
+          "n_samples": 193,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 193
+          },
+          "hits": {
+            "accuracy@1": 174,
+            "accuracy@3": 193,
+            "accuracy@5": 193
+          },
+          "accuracy@1": 0.9015544041450777,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 25,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 25
+              },
+              "hits": {
+                "accuracy@1": 22,
+                "accuracy@3": 25,
+                "accuracy@5": 25
+              },
+              "accuracy@1": 0.88,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 7,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 7
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 7,
+                "accuracy@5": 7
+              },
+              "accuracy@1": 0.8571428571428571,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 0.5,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 76,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 76
+              },
+              "hits": {
+                "accuracy@1": 65,
+                "accuracy@3": 76,
+                "accuracy@5": 76
+              },
+              "accuracy@1": 0.8552631578947368,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 18,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 18
+              },
+              "hits": {
+                "accuracy@1": 18,
+                "accuracy@3": 18,
+                "accuracy@5": 18
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 14,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 14
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 14,
+                "accuracy@5": 14
+              },
+              "accuracy@1": 0.9285714285714286,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 12,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 12
+              },
+              "hits": {
+                "accuracy@1": 10,
+                "accuracy@3": 12,
+                "accuracy@5": 12
+              },
+              "accuracy@1": 0.8333333333333334,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 11,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 11
+              },
+              "hits": {
+                "accuracy@1": 11,
+                "accuracy@3": 11,
+                "accuracy@5": 11
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.9045258980785297
+        },
+        "train": {
+          "n_samples": 135,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 135
+          },
+          "hits": {
+            "accuracy@1": 127,
+            "accuracy@3": 135,
+            "accuracy@5": 135
+          },
+          "accuracy@1": 0.9407407407407408,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 6,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 6
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 6,
+                "accuracy@5": 6
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 17,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 17
+              },
+              "hits": {
+                "accuracy@1": 16,
+                "accuracy@3": 17,
+                "accuracy@5": 17
+              },
+              "accuracy@1": 0.9411764705882353,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 53,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 53
+              },
+              "hits": {
+                "accuracy@1": 48,
+                "accuracy@3": 53,
+                "accuracy@5": 53
+              },
+              "accuracy@1": 0.9056603773584906,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 10,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 10
+              },
+              "hits": {
+                "accuracy@1": 10,
+                "accuracy@3": 10,
+                "accuracy@5": 10
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 9,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 9
+              },
+              "hits": {
+                "accuracy@1": 9,
+                "accuracy@3": 9,
+                "accuracy@5": 9
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.9664030706622272
+        },
+        "test": {
+          "n_samples": 58,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 58
+          },
+          "hits": {
+            "accuracy@1": 47,
+            "accuracy@3": 58,
+            "accuracy@5": 58
+          },
+          "accuracy@1": 0.8103448275862069,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 0.5,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 0,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 0.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 23,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 23
+              },
+              "hits": {
+                "accuracy@1": 17,
+                "accuracy@3": 23,
+                "accuracy@5": 23
+              },
+              "accuracy@1": 0.7391304347826086,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 3,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 3
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 3,
+                "accuracy@5": 3
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.8115942028985508
+        }
+      }
+    },
+    {
+      "model": "openai/gpt-6-luna-decisions",
+      "model_label": "Luna",
+      "strategy": "2-step",
+      "stage": 2,
+      "source_folder": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/2-step/openai__gpt-6-luna-decisions_20261111T130507.262036+0300",
+      "run_id": "openai__gpt-6-luna-decisions_20261111T130507.262036+0300",
+      "started_at": "2026-11-11T13:05:07.262036+03:00",
+      "finished_at": "2026-11-11T13:08:07.207650+03:00",
+      "artifact_origin": "two_stage_pipeline",
+      "pipeline_status": null,
+      "paired_artifact_dir": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/1-step/openai__gpt-6-luna-decisions_20261111T130507.262036+0300",
+      "system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd",
+      "candidate_order": [
+        "agentic_skills",
+        "ai-coach",
+        "education",
+        "grill",
+        "hrp-analytics",
+        "mcp_internet",
+        "meetings",
+        "metrics",
+        "onboarding_top_600",
+        "outstaff",
+        "recruiter",
+        "recruiter-brief",
+        "service_navigation",
+        "talent-research",
+        "team_profile",
+        "top600-successor-rotation",
+        "vacation"
+      ],
+      "shortlist_k": 5,
+      "source_files_sha256": {
+        "config.json": "c8519c69a455f8ee9e40bccd1ee140216137b52b81fe3f274f9b901acf3e4f41",
+        "metrics.json": "fc286ac4c5958851ad44e1a9d5c54f843660c3c9c28aad06aef144bb68c9775a",
+        "samples.json": "0d53b5a24b2f4a787b1ec7eb07bc4c52e8ee575d96ab1f735f679c91076851e5",
+        "subagents.json": "c165fb7a917422855807750c2ba0a02577153c600e5f3190c818237de919fff5",
+        "stage_1_winners.jsonl": "3d6447b8a9b809606a2b729065a5fa80d272e0e98e50fb8bd8ac8aeba5ab3825",
+        "stage_1_details.jsonl": "1ccc86e162de0431999ad1e8820f22d39d8846d692a7012bed110497f8adb03f",
+        "stage_2_winners.jsonl": "0a3bd473b57da64c890a58a99f00b12f7c9d8e01743892fff98750996bbd9000",
+        "stage_2_details.jsonl": "dcc26c49698e88a568ddd7ef9e3042f0279dcf74d03261dbbe03909a728684bd"
+      },
+      "metrics": {
+        "full": {
+          "n_samples": 193,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 193
+          },
+          "hits": {
+            "accuracy@1": 177,
+            "accuracy@3": 193,
+            "accuracy@5": 193
+          },
+          "accuracy@1": 0.917098445595855,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 25,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 25
+              },
+              "hits": {
+                "accuracy@1": 23,
+                "accuracy@3": 25,
+                "accuracy@5": 25
+              },
+              "accuracy@1": 0.92,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 7,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 7
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 7,
+                "accuracy@5": 7
+              },
+              "accuracy@1": 0.7142857142857143,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 0.5,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 76,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 76
+              },
+              "hits": {
+                "accuracy@1": 66,
+                "accuracy@3": 76,
+                "accuracy@5": 76
+              },
+              "accuracy@1": 0.868421052631579,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 18,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 18
+              },
+              "hits": {
+                "accuracy@1": 18,
+                "accuracy@3": 18,
+                "accuracy@5": 18
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 14,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 14
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 14,
+                "accuracy@5": 14
+              },
+              "accuracy@1": 0.9285714285714286,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 12,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 12
+              },
+              "hits": {
+                "accuracy@1": 12,
+                "accuracy@3": 12,
+                "accuracy@5": 12
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 11,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 11
+              },
+              "hits": {
+                "accuracy@1": 11,
+                "accuracy@3": 11,
+                "accuracy@5": 11
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.9109398496240603
+        },
+        "train": {
+          "n_samples": 135,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 135
+          },
+          "hits": {
+            "accuracy@1": 128,
+            "accuracy@3": 135,
+            "accuracy@5": 135
+          },
+          "accuracy@1": 0.9481481481481482,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 6,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 6
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 6,
+                "accuracy@5": 6
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 17,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 17
+              },
+              "hits": {
+                "accuracy@1": 16,
+                "accuracy@3": 17,
+                "accuracy@5": 17
+              },
+              "accuracy@1": 0.9411764705882353,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 0.8,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 53,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 53
+              },
+              "hits": {
+                "accuracy@1": 48,
+                "accuracy@3": 53,
+                "accuracy@5": 53
+              },
+              "accuracy@1": 0.9056603773584906,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 10,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 10
+              },
+              "hits": {
+                "accuracy@1": 10,
+                "accuracy@3": 10,
+                "accuracy@5": 10
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 9,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 9
+              },
+              "hits": {
+                "accuracy@1": 9,
+                "accuracy@3": 9,
+                "accuracy@5": 9
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.9705697373288938
+        },
+        "test": {
+          "n_samples": 58,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 58
+          },
+          "hits": {
+            "accuracy@1": 49,
+            "accuracy@3": 58,
+            "accuracy@5": 58
+          },
+          "accuracy@1": 0.8448275862068966,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 7,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 0.875,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 0.5,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 0,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 0.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 23,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 23
+              },
+              "hits": {
+                "accuracy@1": 18,
+                "accuracy@3": 23,
+                "accuracy@5": 23
+              },
+              "accuracy@1": 0.782608695652174,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 3,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 3
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 3,
+                "accuracy@5": 3
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.8256340579710145
+        }
+      }
+    },
+    {
+      "model": "typesafe/jev-1.14",
+      "model_label": "Jev 1.14",
+      "strategy": "1-step",
+      "stage": 1,
+      "source_folder": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/1-step/typesafe__jev-1.14_20261111T130208.180691+0300",
+      "run_id": "typesafe__jev-1.14_20261111T130208.180691+0300",
+      "started_at": "2026-11-11T13:02:08.180691+03:00",
+      "finished_at": "2026-11-11T13:04:27.092542+03:00",
+      "artifact_origin": "shared_stage_1",
+      "pipeline_status": "completed",
+      "paired_artifact_dir": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/2-step/typesafe__jev-1.14_20261111T130208.180691+0300",
+      "system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd",
+      "candidate_order": [
+        "agentic_skills",
+        "ai-coach",
+        "education",
+        "grill",
+        "hrp-analytics",
+        "mcp_internet",
+        "meetings",
+        "metrics",
+        "onboarding_top_600",
+        "outstaff",
+        "recruiter",
+        "recruiter-brief",
+        "service_navigation",
+        "talent-research",
+        "team_profile",
+        "top600-successor-rotation",
+        "vacation"
+      ],
+      "shortlist_k": null,
+      "source_files_sha256": {
+        "config.json": "55cc5a49714103c3cf0753caaeebac77c66ac646e36f184480a924e8b5eeedc5",
+        "metrics.json": "7e94714a24fea1639346d5c5165615b89996342955c600a02d529a30c08ed435",
+        "samples.json": "0d53b5a24b2f4a787b1ec7eb07bc4c52e8ee575d96ab1f735f679c91076851e5",
+        "subagents.json": "c165fb7a917422855807750c2ba0a02577153c600e5f3190c818237de919fff5",
+        "stage_1_winners.jsonl": "8b2dadc084190ac92a80dc835b20172fffd9fcec49b0c3b2e7deb6b10004e3bc",
+        "stage_1_details.jsonl": "468bede9c0ddb04872877b6c16b163a56d73428547b3261df4c76fe9b123fff4"
+      },
+      "metrics": {
+        "full": {
+          "n_samples": 193,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 193
+          },
+          "hits": {
+            "accuracy@1": 180,
+            "accuracy@3": 193,
+            "accuracy@5": 193
+          },
+          "accuracy@1": 0.9326424870466321,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 25,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 25
+              },
+              "hits": {
+                "accuracy@1": 22,
+                "accuracy@3": 25,
+                "accuracy@5": 25
+              },
+              "accuracy@1": 0.88,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 7,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 7
+              },
+              "hits": {
+                "accuracy@1": 7,
+                "accuracy@3": 7,
+                "accuracy@5": 7
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 0.5,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 76,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 76
+              },
+              "hits": {
+                "accuracy@1": 73,
+                "accuracy@3": 76,
+                "accuracy@5": 76
+              },
+              "accuracy@1": 0.9605263157894737,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 18,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 18
+              },
+              "hits": {
+                "accuracy@1": 18,
+                "accuracy@3": 18,
+                "accuracy@5": 18
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 14,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 14
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 14,
+                "accuracy@5": 14
+              },
+              "accuracy@1": 0.9285714285714286,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 12,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 12
+              },
+              "hits": {
+                "accuracy@1": 7,
+                "accuracy@3": 12,
+                "accuracy@5": 12
+              },
+              "accuracy@1": 0.5833333333333334,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 11,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 11
+              },
+              "hits": {
+                "accuracy@1": 11,
+                "accuracy@3": 11,
+                "accuracy@5": 11
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.9043692564745197
+        },
+        "train": {
+          "n_samples": 135,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 135
+          },
+          "hits": {
+            "accuracy@1": 133,
+            "accuracy@3": 135,
+            "accuracy@5": 135
+          },
+          "accuracy@1": 0.9851851851851852,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 6,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 6
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 6,
+                "accuracy@5": 6
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 17,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 17
+              },
+              "hits": {
+                "accuracy@1": 16,
+                "accuracy@3": 17,
+                "accuracy@5": 17
+              },
+              "accuracy@1": 0.9411764705882353,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 53,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 53
+              },
+              "hits": {
+                "accuracy@1": 53,
+                "accuracy@3": 53,
+                "accuracy@5": 53
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 10,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 10
+              },
+              "hits": {
+                "accuracy@1": 10,
+                "accuracy@3": 10,
+                "accuracy@5": 10
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 7,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 0.875,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 9,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 9
+              },
+              "hits": {
+                "accuracy@1": 9,
+                "accuracy@3": 9,
+                "accuracy@5": 9
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.9846813725490197
+        },
+        "test": {
+          "n_samples": 58,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 58
+          },
+          "hits": {
+            "accuracy@1": 47,
+            "accuracy@3": 58,
+            "accuracy@5": 58
+          },
+          "accuracy@1": 0.8103448275862069,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 0,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 0.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 23,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 23
+              },
+              "hits": {
+                "accuracy@1": 20,
+                "accuracy@3": 23,
+                "accuracy@5": 23
+              },
+              "accuracy@1": 0.8695652173913043,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 0,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 0.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 3,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 3
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 3,
+                "accuracy@5": 3
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.7807971014492754
+        }
+      }
+    },
+    {
+      "model": "typesafe/jev-1.14",
+      "model_label": "Jev 1.14",
+      "strategy": "2-step",
+      "stage": 2,
+      "source_folder": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/2-step/typesafe__jev-1.14_20261111T130208.180691+0300",
+      "run_id": "typesafe__jev-1.14_20261111T130208.180691+0300",
+      "started_at": "2026-11-11T13:02:08.180691+03:00",
+      "finished_at": "2026-11-11T13:04:27.092542+03:00",
+      "artifact_origin": "two_stage_pipeline",
+      "pipeline_status": null,
+      "paired_artifact_dir": "/home/xaeliudzyh/SberAI/jev-as-orchestrator/experiments/exp2/train70_seed42/1-step/typesafe__jev-1.14_20261111T130208.180691+0300",
+      "system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd",
+      "candidate_order": [
+        "agentic_skills",
+        "ai-coach",
+        "education",
+        "grill",
+        "hrp-analytics",
+        "mcp_internet",
+        "meetings",
+        "metrics",
+        "onboarding_top_600",
+        "outstaff",
+        "recruiter",
+        "recruiter-brief",
+        "service_navigation",
+        "talent-research",
+        "team_profile",
+        "top600-successor-rotation",
+        "vacation"
+      ],
+      "shortlist_k": 5,
+      "source_files_sha256": {
+        "config.json": "c3e05f5930f7140e0a00fd484d0e387ac9f186885aeb86978922bac9cdbb2072",
+        "metrics.json": "020b845e2076fcf024205608660aaed82916ac926268501b817d8fe010614389",
+        "samples.json": "0d53b5a24b2f4a787b1ec7eb07bc4c52e8ee575d96ab1f735f679c91076851e5",
+        "subagents.json": "c165fb7a917422855807750c2ba0a02577153c600e5f3190c818237de919fff5",
+        "stage_1_winners.jsonl": "8b2dadc084190ac92a80dc835b20172fffd9fcec49b0c3b2e7deb6b10004e3bc",
+        "stage_1_details.jsonl": "468bede9c0ddb04872877b6c16b163a56d73428547b3261df4c76fe9b123fff4",
+        "stage_2_winners.jsonl": "0457763fac9fc087007433cf1f27ac80d36bda48fffc3a596a0ef7ebfbda2808",
+        "stage_2_details.jsonl": "fd5d079b74c1875aa86a52796fb38db65e6542493aeecd8312e4c28aa502d6e5"
+      },
+      "metrics": {
+        "full": {
+          "n_samples": 193,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 193
+          },
+          "hits": {
+            "accuracy@1": 183,
+            "accuracy@3": 193,
+            "accuracy@5": 193
+          },
+          "accuracy@1": 0.9481865284974094,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 25,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 25
+              },
+              "hits": {
+                "accuracy@1": 22,
+                "accuracy@3": 25,
+                "accuracy@5": 25
+              },
+              "accuracy@1": 0.88,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 7,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 7
+              },
+              "hits": {
+                "accuracy@1": 7,
+                "accuracy@3": 7,
+                "accuracy@5": 7
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 0.5,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 76,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 76
+              },
+              "hits": {
+                "accuracy@1": 71,
+                "accuracy@3": 76,
+                "accuracy@5": 76
+              },
+              "accuracy@1": 0.9342105263157895,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 18,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 18
+              },
+              "hits": {
+                "accuracy@1": 18,
+                "accuracy@3": 18,
+                "accuracy@5": 18
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 14,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 14
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 14,
+                "accuracy@5": 14
+              },
+              "accuracy@1": 0.9285714285714286,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 12,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 12
+              },
+              "hits": {
+                "accuracy@1": 12,
+                "accuracy@3": 12,
+                "accuracy@5": 12
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 11,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 11
+              },
+              "hits": {
+                "accuracy@1": 11,
+                "accuracy@3": 11,
+                "accuracy@5": 11
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.9368984962406014
+        },
+        "train": {
+          "n_samples": 135,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 135
+          },
+          "hits": {
+            "accuracy@1": 132,
+            "accuracy@3": 135,
+            "accuracy@5": 135
+          },
+          "accuracy@1": 0.9777777777777777,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 6,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 6
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 6,
+                "accuracy@5": 6
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 17,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 17
+              },
+              "hits": {
+                "accuracy@1": 16,
+                "accuracy@3": 17,
+                "accuracy@5": 17
+              },
+              "accuracy@1": 0.9411764705882353,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 53,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 53
+              },
+              "hits": {
+                "accuracy@1": 51,
+                "accuracy@3": 53,
+                "accuracy@5": 53
+              },
+              "accuracy@1": 0.9622641509433962,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 13,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 13
+              },
+              "hits": {
+                "accuracy@1": 13,
+                "accuracy@3": 13,
+                "accuracy@5": 13
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 10,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 10
+              },
+              "hits": {
+                "accuracy@1": 10,
+                "accuracy@3": 10,
+                "accuracy@5": 10
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 8,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 9,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 9
+              },
+              "hits": {
+                "accuracy@1": 9,
+                "accuracy@3": 9,
+                "accuracy@5": 9
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.991953385127636
+        },
+        "test": {
+          "n_samples": 58,
+          "n_errors": 0,
+          "status_counts": {
+            "ok": 58
+          },
+          "hits": {
+            "accuracy@1": 51,
+            "accuracy@3": 58,
+            "accuracy@5": 58
+          },
+          "accuracy@1": 0.8793103448275862,
+          "accuracy@3": 1.0,
+          "accuracy@5": 1.0,
+          "per_class": {
+            "agentic_skills": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "ai-coach": {
+              "n_samples": 8,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 8
+              },
+              "hits": {
+                "accuracy@1": 6,
+                "accuracy@3": 8,
+                "accuracy@5": 8
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "education": {
+              "n_samples": 2,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 2
+              },
+              "hits": {
+                "accuracy@1": 2,
+                "accuracy@3": 2,
+                "accuracy@5": 2
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "grill": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 0,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 0.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "hrp-analytics": {
+              "n_samples": 23,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 23
+              },
+              "hits": {
+                "accuracy@1": 20,
+                "accuracy@3": 23,
+                "accuracy@5": 23
+              },
+              "accuracy@1": 0.8695652173913043,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "mcp_internet": {
+              "n_samples": 5,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 5
+              },
+              "hits": {
+                "accuracy@1": 5,
+                "accuracy@3": 5,
+                "accuracy@5": 5
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "onboarding_top_600": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "recruiter": {
+              "n_samples": 1,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 1
+              },
+              "hits": {
+                "accuracy@1": 1,
+                "accuracy@3": 1,
+                "accuracy@5": 1
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "talent-research": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 0.75,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "team_profile": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "top600-successor-rotation": {
+              "n_samples": 3,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 3
+              },
+              "hits": {
+                "accuracy@1": 3,
+                "accuracy@3": 3,
+                "accuracy@5": 3
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            },
+            "vacation": {
+              "n_samples": 4,
+              "n_errors": 0,
+              "status_counts": {
+                "ok": 4
+              },
+              "hits": {
+                "accuracy@1": 4,
+                "accuracy@3": 4,
+                "accuracy@5": 4
+              },
+              "accuracy@1": 1.0,
+              "accuracy@3": 1.0,
+              "accuracy@5": 1.0
+            }
+          },
+          "macro_accuracy@1": 0.8641304347826088
+        }
+      }
+    }
+  ],
+  "exclusions": [],
+  "missing": []
+}

@@ -89,7 +89,7 @@ def common_parser(description, experiment="exp1", default_strategy=None, default
                                 help="Evaluate descriptions only; do not run the full-text second stage")
     parser.set_defaults(experiment=experiment, metadata_fields=[] if experiment == "exp2" else list(METADATA_FIELDS))
     parser.add_argument("--system-prompt", type=Path,
-                        default=default_prompt or ROOT / experiment / f"routing_{experiment}.txt")
+                        default=default_prompt or ROOT / experiment / "prompts" / f"routing_{experiment}.txt")
     if experiment == "exp1":
         parser.add_argument("--corpus", type=Path, default=ROOT / "data/skill_routing_exp1/corpus/corpus_find_skill.json")
         parser.add_argument("--skills-dir", type=Path, default=ROOT / "data/skill_routing_exp1/skills")

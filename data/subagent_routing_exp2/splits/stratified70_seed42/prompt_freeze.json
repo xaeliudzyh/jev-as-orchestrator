@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "system_prompt_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+  "raw_file_sha256": "d5e4a5b97243582166c3f9396c8cbda7f905fdde6ccce4b10ef2f86bb943d6ff",
+  "prompt_file": "exp2/routing_train70_ru_exp2.txt",
+  "author_input_sha256": "ca7093e3550169d8286f162c0e72f3ef22636ec1678f978c2ac744dda74b4149",
+  "author_result_sha256": "1bd9ba32e0adf2643026e1a792c8aba2144cc3669bcd3b5f91537fe12c61d6b6",
+  "manifest_sha256": "378c2e6199602b77f38c3945991ea8044ec79895d656cf7d236e7e31089bf0b5",
+  "authorship": "Separate ephemeral Codex CLI; train135 + static17 catalog only; no prior chat; OS Landlock isolation; zero tool events; no semantic edits by parent",
+  "frozen_at": "2026-11-11T11:52:54.965348+03:00",
+  "evaluation_status": "not_run; user receives Jev/Luna commands"
+}

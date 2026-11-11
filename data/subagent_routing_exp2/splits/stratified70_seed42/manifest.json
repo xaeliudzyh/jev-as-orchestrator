@@ -1,0 +1,1638 @@
+{
+  "schema_version": 1,
+  "seed": 42,
+  "test_fraction": "3/10",
+  "n_full": 193,
+  "n_train": 135,
+  "n_test": 58,
+  "n_candidates": 17,
+  "n_observed_labels": 12,
+  "allocation": "ceil(N*0.30); constrained largest shortfall, 1<=test_per_label<=N_label-1; alphabetic quota ties",
+  "selection": "sha256(JSON[seed,label,original_sample_id,query]); preserve original order within each export",
+  "stratification": "SubAgent only; seed chosen before prompt authoring, not selected by metrics",
+  "duplicate_policy": "Reject duplicate questions after NFKC/casefold/whitespace normalization",
+  "source_bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+  "source_corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd",
+  "label_counts": {
+    "agentic_skills": {
+      "full": 8,
+      "train": 6,
+      "test": 2
+    },
+    "ai-coach": {
+      "full": 25,
+      "train": 17,
+      "test": 8
+    },
+    "education": {
+      "full": 7,
+      "train": 5,
+      "test": 2
+    },
+    "grill": {
+      "full": 2,
+      "train": 1,
+      "test": 1
+    },
+    "hrp-analytics": {
+      "full": 76,
+      "train": 53,
+      "test": 23
+    },
+    "mcp_internet": {
+      "full": 18,
+      "train": 13,
+      "test": 5
+    },
+    "onboarding_top_600": {
+      "full": 5,
+      "train": 4,
+      "test": 1
+    },
+    "recruiter": {
+      "full": 2,
+      "train": 1,
+      "test": 1
+    },
+    "talent-research": {
+      "full": 14,
+      "train": 10,
+      "test": 4
+    },
+    "team_profile": {
+      "full": 12,
+      "train": 8,
+      "test": 4
+    },
+    "top600-successor-rotation": {
+      "full": 11,
+      "train": 8,
+      "test": 3
+    },
+    "vacation": {
+      "full": 13,
+      "train": 9,
+      "test": 4
+    }
+  },
+  "train_original_ids": [
+    0,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    9,
+    10,
+    12,
+    13,
+    14,
+    15,
+    16,
+    18,
+    20,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28,
+    29,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    48,
+    49,
+    50,
+    52,
+    54,
+    55,
+    56,
+    57,
+    60,
+    64,
+    65,
+    67,
+    68,
+    69,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    80,
+    82,
+    83,
+    84,
+    85,
+    87,
+    88,
+    89,
+    92,
+    94,
+    96,
+    97,
+    99,
+    100,
+    102,
+    103,
+    108,
+    109,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    120,
+    121,
+    122,
+    124,
+    126,
+    127,
+    129,
+    130,
+    131,
+    132,
+    134,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    144,
+    146,
+    148,
+    149,
+    152,
+    153,
+    154,
+    155,
+    157,
+    158,
+    159,
+    161,
+    163,
+    164,
+    165,
+    167,
+    169,
+    171,
+    172,
+    173,
+    175,
+    176,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    189,
+    190,
+    191,
+    192
+  ],
+  "test_original_ids": [
+    1,
+    7,
+    11,
+    17,
+    19,
+    21,
+    27,
+    30,
+    31,
+    32,
+    39,
+    40,
+    47,
+    51,
+    53,
+    58,
+    59,
+    61,
+    62,
+    63,
+    66,
+    70,
+    79,
+    81,
+    86,
+    90,
+    91,
+    93,
+    95,
+    98,
+    101,
+    104,
+    105,
+    106,
+    107,
+    110,
+    119,
+    123,
+    125,
+    128,
+    133,
+    135,
+    143,
+    145,
+    147,
+    150,
+    151,
+    156,
+    160,
+    162,
+    166,
+    168,
+    170,
+    174,
+    177,
+    178,
+    179,
+    188
+  ],
+  "assignment": [
+    {
+      "original_sample_id": 0,
+      "split": "train",
+      "split_sample_id": 0,
+      "question_sha256": "4ea4d2d456e4ef821a8d9ef072546c1b4b5d8ca9ac495c6dcb6e564267f0ebf1",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 2,
+      "split": "train",
+      "split_sample_id": 1,
+      "question_sha256": "eac0d964aff9224dc16d9b79712da1d685e16ee7d6fbcae48393520b1a88e9f9",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 3,
+      "split": "train",
+      "split_sample_id": 2,
+      "question_sha256": "5178f82d303623eb65b944c3fdf59725f101e6ecedad6368f01416c9fa39ba77",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 4,
+      "split": "train",
+      "split_sample_id": 3,
+      "question_sha256": "bdaf05f199e4fd63ca0745d06b5bf117a95118f83cede4f47c97fb06cfb3d448",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 5,
+      "split": "train",
+      "split_sample_id": 4,
+      "question_sha256": "82e08110a5851781a57215db8b44a813cdb5df7e3881bca616fada1c322fabd8",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 6,
+      "split": "train",
+      "split_sample_id": 5,
+      "question_sha256": "230a5775dda3885f1e85841f019a24089f665ca69d7984acc43e7c467d065f6f",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 8,
+      "split": "train",
+      "split_sample_id": 6,
+      "question_sha256": "12ed34fe9225b80ba7c6e5519533debe8af70c43ef44c4061c06a46780a3cab2",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 9,
+      "split": "train",
+      "split_sample_id": 7,
+      "question_sha256": "b6ab396837cfa89d96c417afcbb6fceabf1227cf8f76754a89c03c3e6c77edb3",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 10,
+      "split": "train",
+      "split_sample_id": 8,
+      "question_sha256": "28b704dea6dfc5cea1162a2e4c535e94367b74959fb13934dfdd3439a988e340",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 12,
+      "split": "train",
+      "split_sample_id": 9,
+      "question_sha256": "1304ee12b222f58a8329920ee623b8e445f3010b7df7b01d54e37167a239a052",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 13,
+      "split": "train",
+      "split_sample_id": 10,
+      "question_sha256": "f3fb244ff5fdbbf7872df23d6d28125f1c9748aafd8b8316694ff91c4cea8f58",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 14,
+      "split": "train",
+      "split_sample_id": 11,
+      "question_sha256": "c532be0d5940ca43601b815f06f2eba492dca9cc93872d239d8d1e0d656f71b9",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 15,
+      "split": "train",
+      "split_sample_id": 12,
+      "question_sha256": "7dac18a4a5002ff6ef5646b576dd965bba2ffe8011294bcd6160da88bc21dfbf",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 16,
+      "split": "train",
+      "split_sample_id": 13,
+      "question_sha256": "dc0cf062f311e2bf2f5cddb51c173bc8723281b1390108e9e03e8060ae840462",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 18,
+      "split": "train",
+      "split_sample_id": 14,
+      "question_sha256": "c54b246e3c234bc77b86b1d7a4fdf85970183fb1a47fda7c84265aeb7357ec95",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 20,
+      "split": "train",
+      "split_sample_id": 15,
+      "question_sha256": "befa6cd9c5dfe346a4300e7aea454e4ef9b98b4879a5f5b8ce344286ccbc5bdd",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 22,
+      "split": "train",
+      "split_sample_id": 16,
+      "question_sha256": "82d2285154691d4ac0303a994bc59d40352a0be206074078687073230e3c3899",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 23,
+      "split": "train",
+      "split_sample_id": 17,
+      "question_sha256": "d47c1f946af4cc9bccb7c5170fa677ca5ac03d980e5dfcca738f73b0a1157f3f",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 24,
+      "split": "train",
+      "split_sample_id": 18,
+      "question_sha256": "17a3e5fab5e780209058b1b3e71e894c6f73c4a9e499d1e632424feddc752309",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 25,
+      "split": "train",
+      "split_sample_id": 19,
+      "question_sha256": "09f8b5dcfa8db7953cbab27daddf409e65c9b96ff517c8917b5a2b6174df521c",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 26,
+      "split": "train",
+      "split_sample_id": 20,
+      "question_sha256": "35f28d1663cf622502641c19ed4e301653e3e665e1407b8ea18afc01dca6e5bc",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 28,
+      "split": "train",
+      "split_sample_id": 21,
+      "question_sha256": "ba5e5100d7d5d21fb57f776131706d048b540493953d6567414dc12bc98a52f0",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 29,
+      "split": "train",
+      "split_sample_id": 22,
+      "question_sha256": "f23551b5df510feee4ffd490eabbbda00e2ce10edc743d7f87d85aff924eb6a9",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 33,
+      "split": "train",
+      "split_sample_id": 23,
+      "question_sha256": "6dbba68be0b4eb5be6634a930fa49162711ed084c01e6dda7f6fe410ca5b56d8",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 34,
+      "split": "train",
+      "split_sample_id": 24,
+      "question_sha256": "dc2f61b5ae9ff0f6f0af85c5df5ed8a9221fd32922e1ce33f240e5d5530e0e04",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 35,
+      "split": "train",
+      "split_sample_id": 25,
+      "question_sha256": "f0d742bbae6727643a1d4c037da5b18d64937555ada54d1d43e2730093792ffc",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 36,
+      "split": "train",
+      "split_sample_id": 26,
+      "question_sha256": "7e8e32e82641d5fb185327b02f839381761a53415bcec32b8a822f4affe10e02",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 37,
+      "split": "train",
+      "split_sample_id": 27,
+      "question_sha256": "e128fccb46dd889510ec6bd522038985d532cc68d4e97592ac8a01bf84736361",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 38,
+      "split": "train",
+      "split_sample_id": 28,
+      "question_sha256": "34ad28854e5f1b73bf1fc8c3102958b83311e09cd83357a52deb354dc6abc1df",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 41,
+      "split": "train",
+      "split_sample_id": 29,
+      "question_sha256": "ec0b0cc34aa7ad390058095641400d83baa1f2fcdbc18a296c0a1c7441ab39a5",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 42,
+      "split": "train",
+      "split_sample_id": 30,
+      "question_sha256": "7cf2b0c38837fd753351a15ed16e3c8f855df16ea70bde920111c2655a45a830",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 43,
+      "split": "train",
+      "split_sample_id": 31,
+      "question_sha256": "837dc42674b0c93d252e99bf1e1c2d90564f528414e0c747bd54f1b67e73fa34",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 44,
+      "split": "train",
+      "split_sample_id": 32,
+      "question_sha256": "7bc96553f5ad788e3e496f9d325cf5d8dba50e014f376a98a72c2baac3bbc4ea",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 45,
+      "split": "train",
+      "split_sample_id": 33,
+      "question_sha256": "b7febadacd00c74dcdccb9c166f2b60c2fc1c594510bba7d6352e7d5083e9714",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 46,
+      "split": "train",
+      "split_sample_id": 34,
+      "question_sha256": "33c2a7548980025b6c51f170750e9a8bc15976c069d5b1d87f920984ee6c2b65",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 48,
+      "split": "train",
+      "split_sample_id": 35,
+      "question_sha256": "97daa76f5f6dd2d5ba14a048fa413e42c8f16b1444cc08446c7b94a3ab20abb0",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 49,
+      "split": "train",
+      "split_sample_id": 36,
+      "question_sha256": "df81bfac99e93c3af5986a457ffcf1838bdcccbe7c4c5edb61eb177920ec46b5",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 50,
+      "split": "train",
+      "split_sample_id": 37,
+      "question_sha256": "0336082e52edebebc6c42004c8461a8d6080a0dc5799c60e19a412f0d2f1911b",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 52,
+      "split": "train",
+      "split_sample_id": 38,
+      "question_sha256": "f0be17a0c86041d2259fc635e6c6fdde9767a5cbe44e493adee36f5329d1f96c",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 54,
+      "split": "train",
+      "split_sample_id": 39,
+      "question_sha256": "4af4fcbcfb8448b7635d56ec6b64e879b0af3b8de135fa26cf090017f2f5933d",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 55,
+      "split": "train",
+      "split_sample_id": 40,
+      "question_sha256": "e9f5d0b1311526224835a4b9635a43f234a8fa5b7225b051458c30dd0b27d813",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 56,
+      "split": "train",
+      "split_sample_id": 41,
+      "question_sha256": "dcf685b5c6a8789e25e3fe9904a1ee070577a18bd6ad0c1c0df130a8b31f698c",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 57,
+      "split": "train",
+      "split_sample_id": 42,
+      "question_sha256": "ad39872b38fef6e8a4c4ac9259c7c64c325e7f4ab6ccde8d8630ad0862b230f4",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 60,
+      "split": "train",
+      "split_sample_id": 43,
+      "question_sha256": "9767b7e4578ec55553c2f92b9edf6746148699d82635359d3d5882d115284e19",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 64,
+      "split": "train",
+      "split_sample_id": 44,
+      "question_sha256": "f173ac0155287830187e53e5b7193d85dab305ae17dfa66552899d19e1aed36f",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 65,
+      "split": "train",
+      "split_sample_id": 45,
+      "question_sha256": "78b03a8deb9625cbc09074e677bb46dd2d8cc495bb4ccc567b2b6ff4a2f67db9",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 67,
+      "split": "train",
+      "split_sample_id": 46,
+      "question_sha256": "618e653925bd7a87c8db98000833342f41fff63c4b67e945d466ca4b83085c06",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 68,
+      "split": "train",
+      "split_sample_id": 47,
+      "question_sha256": "b58d9cd98c6f0fe325ad0f1b482168f521e05cb64b3f2d224458d25edd8089a0",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 69,
+      "split": "train",
+      "split_sample_id": 48,
+      "question_sha256": "95637a403d10df98982aaa5f3f1d9b1f8b1912d205a0db5719c4b122c3d9675e",
+      "target_subagent": "grill"
+    },
+    {
+      "original_sample_id": 71,
+      "split": "train",
+      "split_sample_id": 49,
+      "question_sha256": "afa1c74f8554b4d36522cb5eea69048c2b925afe0f7d1357ece0224357723af7",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 72,
+      "split": "train",
+      "split_sample_id": 50,
+      "question_sha256": "ef31a0fa6ada2d2c56cd4e5458631df62a27a73a6435509fc34b92e75851ff99",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 73,
+      "split": "train",
+      "split_sample_id": 51,
+      "question_sha256": "de398dda6dc2b6c64fcbeff0ac52dfd2ccb9b67202ab2a7722ba9b01e1ae45dc",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 74,
+      "split": "train",
+      "split_sample_id": 52,
+      "question_sha256": "91ad8c059ba9a928acaeaf47d3e8a4ff8c08f779de394ec492dfc1acca90a6f1",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 75,
+      "split": "train",
+      "split_sample_id": 53,
+      "question_sha256": "4ed2d3171cc0095b8773abca94ce470aa3c54cc9a9cded15621deaec14253653",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 76,
+      "split": "train",
+      "split_sample_id": 54,
+      "question_sha256": "6c18f1c2d6a63b45075eb5e88161986bd1ddd0d3a1ccdb49cfd1d5bf6697b78c",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 77,
+      "split": "train",
+      "split_sample_id": 55,
+      "question_sha256": "7fe81e8cb383f37c0b595f6c7f8eaa91413afa9a3b310df95ca2005e0cfb7820",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 78,
+      "split": "train",
+      "split_sample_id": 56,
+      "question_sha256": "c300c228fb392cf2248943ffb3a5119231b86718a5aee51225d596a06ba8eae2",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 80,
+      "split": "train",
+      "split_sample_id": 57,
+      "question_sha256": "2b1886c46feed53c28c578245850a20b05cc8c520c68f041339850e96ba53b37",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 82,
+      "split": "train",
+      "split_sample_id": 58,
+      "question_sha256": "66435edd0184a23380bab307ac7a9b8bc9e1b9f19e8d2b8888163a7ceec9c527",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 83,
+      "split": "train",
+      "split_sample_id": 59,
+      "question_sha256": "06f299b2f5f600166981c4e64b87deb726c5f9e0a78b9045a3ccd95b64639b7e",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 84,
+      "split": "train",
+      "split_sample_id": 60,
+      "question_sha256": "d6a69efb0e207b5f571a97cd3df49497a564c4eb5b235421963373deb3d50c6f",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 85,
+      "split": "train",
+      "split_sample_id": 61,
+      "question_sha256": "ec70cb00d6b3825aa602495d78c554ea20a644e6c8888c6d1a503246b8791477",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 87,
+      "split": "train",
+      "split_sample_id": 62,
+      "question_sha256": "15bacad143c899f257f7810f0b4fd5ffd29687015d57943b3a4b852d4d815b24",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 88,
+      "split": "train",
+      "split_sample_id": 63,
+      "question_sha256": "185a2a61bd18ac6c31c2592098b0db6c626c8b6fe7bd9bbb46f0db4cac49b8e2",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 89,
+      "split": "train",
+      "split_sample_id": 64,
+      "question_sha256": "59b485510568aed86ad9752c7d9ccc46d4a2538acea8d287334462a539cc7b5a",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 92,
+      "split": "train",
+      "split_sample_id": 65,
+      "question_sha256": "a1ba6d4b6b73cb1956082468c8eb48e102be303e187ff99ea25c2a00e615e40a",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 94,
+      "split": "train",
+      "split_sample_id": 66,
+      "question_sha256": "03ac00c54614a736b3a62476487b5f842f2ebceba7047d00e5a6d17c444b1b9a",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 96,
+      "split": "train",
+      "split_sample_id": 67,
+      "question_sha256": "861814e9e4168c8a8cffd3c6177b0a1b7f779cc65c1289e79b69051a2b667fc8",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 97,
+      "split": "train",
+      "split_sample_id": 68,
+      "question_sha256": "1f49cf705fb6a364ae55b86078aa8cbc42e8cfff0e04aac56dc1bd45d2f2903b",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 99,
+      "split": "train",
+      "split_sample_id": 69,
+      "question_sha256": "8898707e898ff42330ae03d31230a0a4ada852d29f922ee19901ce2d6fc2f036",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 100,
+      "split": "train",
+      "split_sample_id": 70,
+      "question_sha256": "3f792f740937fca55302f5c150e41420a0a4b9829f6288d40376ccdfe6a06df2",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 102,
+      "split": "train",
+      "split_sample_id": 71,
+      "question_sha256": "3a8035eb98e91a427296641c59e05bcfe72d150f02ab48893bd66ccd7cf1a7f1",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 103,
+      "split": "train",
+      "split_sample_id": 72,
+      "question_sha256": "02907579c62038323a7634fdaedfac71816f8247bbbaa7b33176ef4b3379447e",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 108,
+      "split": "train",
+      "split_sample_id": 73,
+      "question_sha256": "df91c5e79f2e64c7c436809fe2cc240f2b680c871ca791e0398fd29e71dec0f3",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 109,
+      "split": "train",
+      "split_sample_id": 74,
+      "question_sha256": "917e6381cda556bb1090e393a6abcdce076812420c23f70ef3b2cc638909d023",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 111,
+      "split": "train",
+      "split_sample_id": 75,
+      "question_sha256": "a6a9ed991f832ad1e37d3f421f48efdf8185d6bfdd2911a40cf5fdb4d83f2584",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 112,
+      "split": "train",
+      "split_sample_id": 76,
+      "question_sha256": "6e3e63a85259ada27aad8fd3e0bde05c7e2503d589c4642444b8fe97f6c729d1",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 113,
+      "split": "train",
+      "split_sample_id": 77,
+      "question_sha256": "f8bb63bbcc8fc78374977a0d27d8bb966ed4d748f5dd54d580d129f3df2ba2e2",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 114,
+      "split": "train",
+      "split_sample_id": 78,
+      "question_sha256": "0adf84dd3251df97c03cd4e159ea68c3578cc2eeff4215a9fd53fd65910da661",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 115,
+      "split": "train",
+      "split_sample_id": 79,
+      "question_sha256": "65ac7bb2df9e9bbd8bb6aec0b0a8500ebb91ded67424af5a957bfe6cf24d575b",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 116,
+      "split": "train",
+      "split_sample_id": 80,
+      "question_sha256": "72d3523888b1520e8ead1c4f06b6363f1ee329a0daf1aec9fab7facac0e5800c",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 117,
+      "split": "train",
+      "split_sample_id": 81,
+      "question_sha256": "eb5c362ba1d835ddf98a7746cdb887efdf437357350cb5252012138b49fb39f5",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 118,
+      "split": "train",
+      "split_sample_id": 82,
+      "question_sha256": "57cbfeedfca1b187838b2ddf724b38f6e486978a2a7475922fa79ae4f7bfc655",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 120,
+      "split": "train",
+      "split_sample_id": 83,
+      "question_sha256": "71c0b67875e0f04d10cf47999d967295f412f0f07fb60cb7efadc1eddca21ce5",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 121,
+      "split": "train",
+      "split_sample_id": 84,
+      "question_sha256": "424f06253ead9b3281f3cac11e6b22eea2238eace0974b56438601c115947283",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 122,
+      "split": "train",
+      "split_sample_id": 85,
+      "question_sha256": "9aa9c02f3feede73ba9ee57baad61f0360ac1618bc3cf80e1fffb12db5f3d00e",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 124,
+      "split": "train",
+      "split_sample_id": 86,
+      "question_sha256": "4315b41a08072013f52888e6e2557feff8b765de40696ceb6b766599764feebd",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 126,
+      "split": "train",
+      "split_sample_id": 87,
+      "question_sha256": "647d2f5638d045082543ef23c52ebd463d29e834a2a9668c5e5acb20c5db8f25",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 127,
+      "split": "train",
+      "split_sample_id": 88,
+      "question_sha256": "ecefbce9b37dfb6cce7e4dca1f995792f9cd57323108b61702e58e926742ce01",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 129,
+      "split": "train",
+      "split_sample_id": 89,
+      "question_sha256": "d0382949281cb7605a29b48166be783abc4270eafc6d8e08c99b92bfa6d69598",
+      "target_subagent": "recruiter"
+    },
+    {
+      "original_sample_id": 130,
+      "split": "train",
+      "split_sample_id": 90,
+      "question_sha256": "3248c9e5e72516eaa2385051c98e23a4bf2a98d54d28a90e12733bf756016534",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 131,
+      "split": "train",
+      "split_sample_id": 91,
+      "question_sha256": "2163f0bf7b582d9ba06cd5827775d3bce3af126748f6a004f752267215fd3b5a",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 132,
+      "split": "train",
+      "split_sample_id": 92,
+      "question_sha256": "98f97e8700ee93b064b8a41c64962e60f6640b030b72eb6ad95e9c63b463905e",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 134,
+      "split": "train",
+      "split_sample_id": 93,
+      "question_sha256": "8c58ab02c539c7a067bee17ff2e5ebe344ce9e926453f7b4fbad5aefb250636f",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 136,
+      "split": "train",
+      "split_sample_id": 94,
+      "question_sha256": "6d3dec3556ea40795964f40f56148725b8648ab29fddc415bbfd9367222ea3af",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 137,
+      "split": "train",
+      "split_sample_id": 95,
+      "question_sha256": "dafa97b14815be88e03dc3168a09ec25f0f4d9809a387b98b8c17066bad50eaa",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 138,
+      "split": "train",
+      "split_sample_id": 96,
+      "question_sha256": "0e4a337fb0a018e7fdd2bdf733833625b46d2869f29ba8ea4dc8b706df6515d6",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 139,
+      "split": "train",
+      "split_sample_id": 97,
+      "question_sha256": "030bdd1fd93d6c7b784f6cb6881d7cb3d9ac71c46ab18f7fdd7bf8a7c8fd9054",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 140,
+      "split": "train",
+      "split_sample_id": 98,
+      "question_sha256": "67826ae6234a33959b36fea58d891de3d9d6613dffceab8438fb5845a3a8dff3",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 141,
+      "split": "train",
+      "split_sample_id": 99,
+      "question_sha256": "bca4feaefb2cec4c03701a7e300e19a6b8e5ec619a660cabda0822ea186e9ce2",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 142,
+      "split": "train",
+      "split_sample_id": 100,
+      "question_sha256": "d55098d6c39b86f577be961de208219a999f3b355e2c7c52c30324c7f97a5cec",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 144,
+      "split": "train",
+      "split_sample_id": 101,
+      "question_sha256": "7c78fa789ac221044f375d6e723369a28c028bb43f4be20fdcf897c2d551bbf0",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 146,
+      "split": "train",
+      "split_sample_id": 102,
+      "question_sha256": "be5833c47ba7ff84c92c70daf2a0beb1529fac626ef4747024de7c5744898ecf",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 148,
+      "split": "train",
+      "split_sample_id": 103,
+      "question_sha256": "a7a03b8f8d76fc07b5deb84f6dedd6e7206dabc66fd8f267beb3c3fd056dd386",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 149,
+      "split": "train",
+      "split_sample_id": 104,
+      "question_sha256": "bf6567e879ddacc8a0a6be56a755b637c529242e0d22f2fc4ee92f017cdb0658",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 152,
+      "split": "train",
+      "split_sample_id": 105,
+      "question_sha256": "6f70469ff58d51213a786f66acdb2844aa40f551f7fea0da5e2a837baf55bd87",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 153,
+      "split": "train",
+      "split_sample_id": 106,
+      "question_sha256": "fb6bd98f184809542f2f69a0b0181b9d040176ceb33016099fa6b8d72785bf3c",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 154,
+      "split": "train",
+      "split_sample_id": 107,
+      "question_sha256": "e217812204a6e0f2bb03c7f30fec27278d0314ae12d4e381729bcf51a3870578",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 155,
+      "split": "train",
+      "split_sample_id": 108,
+      "question_sha256": "6afe956c308c3c2286fc91522346119d2cc34b8e06062d680ba9250ed80aa906",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 157,
+      "split": "train",
+      "split_sample_id": 109,
+      "question_sha256": "1af6fa78ac5aa0a2ca21fe4ec774983a9e274dbc03a0c3d948bf60dbc8c3bc68",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 158,
+      "split": "train",
+      "split_sample_id": 110,
+      "question_sha256": "b3d84b1dd429a96df30f603052b5ec329969df6bc9e9910d93112a302d47e47f",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 159,
+      "split": "train",
+      "split_sample_id": 111,
+      "question_sha256": "d5cc631780a496d63e4e5ca20cec827f3a0f6520c965c9f0ab39c8a462abbd7a",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 161,
+      "split": "train",
+      "split_sample_id": 112,
+      "question_sha256": "6aa11a2cd349252f30b15e141197800137a70507807368da40136f4db716fa4f",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 163,
+      "split": "train",
+      "split_sample_id": 113,
+      "question_sha256": "2ee09a84d43c4841654e6830aba177c316c99d65d9022c17376741e8eb7c857d",
+      "target_subagent": "education"
+    },
+    {
+      "original_sample_id": 164,
+      "split": "train",
+      "split_sample_id": 114,
+      "question_sha256": "5a583cfd57566483c514875360e6d354d8620fe0445c232ad98aa68d166ad49b",
+      "target_subagent": "education"
+    },
+    {
+      "original_sample_id": 165,
+      "split": "train",
+      "split_sample_id": 115,
+      "question_sha256": "01d25d7b2acbea30de1c41fd210ff0567d54b3436c1354c57bd7dd9f102f7882",
+      "target_subagent": "education"
+    },
+    {
+      "original_sample_id": 167,
+      "split": "train",
+      "split_sample_id": 116,
+      "question_sha256": "1423db5962466d145c23d06a57ab4f900355d0e4d427cd193f5527e80e7f8fdb",
+      "target_subagent": "education"
+    },
+    {
+      "original_sample_id": 169,
+      "split": "train",
+      "split_sample_id": 117,
+      "question_sha256": "1b972b329f37a97b024ccc20ff4727c785f4bc44112a00195b097639c2685b4f",
+      "target_subagent": "education"
+    },
+    {
+      "original_sample_id": 171,
+      "split": "train",
+      "split_sample_id": 118,
+      "question_sha256": "217e7774ba14f8ba8d625046d8a67eabf8d1016db9bb464804c3718cf8abf580",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 172,
+      "split": "train",
+      "split_sample_id": 119,
+      "question_sha256": "b5c9905cadef98158b157a99712d6af3e238e97e4cb908961fbd46188a27fe6b",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 173,
+      "split": "train",
+      "split_sample_id": 120,
+      "question_sha256": "298f6de982ec8243fe0ff926fc2e944a1914c83d616bc1f0a653c4fadb9360b7",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 175,
+      "split": "train",
+      "split_sample_id": 121,
+      "question_sha256": "2785630fec87b30de52752b9b4d482164065767d031800c3e032c7226d9d9ab9",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 176,
+      "split": "train",
+      "split_sample_id": 122,
+      "question_sha256": "0d1a0fb82d61252e5b76b4197d524056de706eaef85aba7605ddc309f106811d",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 180,
+      "split": "train",
+      "split_sample_id": 123,
+      "question_sha256": "ea74d7bf6c3a704d94a2593c24ccdd180a0d4bb0de2e90be49d1106f1eea9e4d",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 181,
+      "split": "train",
+      "split_sample_id": 124,
+      "question_sha256": "927d9071b76e574c93df85fac5fabc12717ec4869aae77054ef23feffa2cf2af",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 182,
+      "split": "train",
+      "split_sample_id": 125,
+      "question_sha256": "64561c101d066b3ea6c3f097f0daaef8cf2a37c2900c06df94a3b18e0777ae4c",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 183,
+      "split": "train",
+      "split_sample_id": 126,
+      "question_sha256": "44155e5ca113dfd961ad522c5298dfa263b33be4653c2ee1c234928e7603ce15",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 184,
+      "split": "train",
+      "split_sample_id": 127,
+      "question_sha256": "3efce795446c54a5b7e7460345fc34fcf16fe7c9a96babb0f5f0733b50e939e1",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 185,
+      "split": "train",
+      "split_sample_id": 128,
+      "question_sha256": "7c4f9a16c9e208e2894a0dfa4b08a8bb464c82c486a39b7a3d3452e88d2e075b",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 186,
+      "split": "train",
+      "split_sample_id": 129,
+      "question_sha256": "5e076e484e192a2b804e7a6b0647b4e7fc84ceaf20357eeabf898b1bc0b330aa",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 187,
+      "split": "train",
+      "split_sample_id": 130,
+      "question_sha256": "b9b2c6762491d95a5e0f0c7b2bca964b39f13a95a4e01cdca4523a4bf1513650",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 189,
+      "split": "train",
+      "split_sample_id": 131,
+      "question_sha256": "c72ae4d66aedb50fb8fa3dc2545a5bb5edbbe6f5b2d9b9905e1abc0006745844",
+      "target_subagent": "onboarding_top_600"
+    },
+    {
+      "original_sample_id": 190,
+      "split": "train",
+      "split_sample_id": 132,
+      "question_sha256": "0cf8456c5ede57b6ec0aba55b1ae55a5be302c688b87a67b718933ac9d9cc9b8",
+      "target_subagent": "onboarding_top_600"
+    },
+    {
+      "original_sample_id": 191,
+      "split": "train",
+      "split_sample_id": 133,
+      "question_sha256": "62fcf0b8016e4e06fa43ec1580b6dbe43a5b7239cf5dbf7ff13175b62e25b5aa",
+      "target_subagent": "onboarding_top_600"
+    },
+    {
+      "original_sample_id": 192,
+      "split": "train",
+      "split_sample_id": 134,
+      "question_sha256": "4d57d9072713108f7ffe6734bfa6f7256ed1e0d13e855bdbc119d444831cb40c",
+      "target_subagent": "onboarding_top_600"
+    },
+    {
+      "original_sample_id": 1,
+      "split": "test",
+      "split_sample_id": 0,
+      "question_sha256": "042f8323f10642a9d1d5e54a649a1ffbd6359b873943edb0e083053117a0cbf9",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 7,
+      "split": "test",
+      "split_sample_id": 1,
+      "question_sha256": "c6e98c4ed89b68fe4a956123a076542a7a87afb83a77123da5d2c4207e000067",
+      "target_subagent": "agentic_skills"
+    },
+    {
+      "original_sample_id": 11,
+      "split": "test",
+      "split_sample_id": 2,
+      "question_sha256": "93f91dbe0120f0ea72a6a682bd81e1b2bb9492d0a39fee6772390feb9ee0615e",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 17,
+      "split": "test",
+      "split_sample_id": 3,
+      "question_sha256": "7bf8741e101c56a1c338a238bb8cce9609d45ed8b94436b4489a35a315c6b646",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 19,
+      "split": "test",
+      "split_sample_id": 4,
+      "question_sha256": "bd62e2999fe9c4cf4c9b28529a159c042af3c092f7ef104c70f70794a8daf4ee",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 21,
+      "split": "test",
+      "split_sample_id": 5,
+      "question_sha256": "b5687e21c910f3282da0409dc00bff17b187b661a0f35fc32fc84de2c5b3ce91",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 27,
+      "split": "test",
+      "split_sample_id": 6,
+      "question_sha256": "27d8ddf7b8c228043283c5139ab0ad2064b2491fad9aa819c09d77f3c4b30bee",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 30,
+      "split": "test",
+      "split_sample_id": 7,
+      "question_sha256": "83f5974cd4ccf5f01f2750cf1c96299eaaa54649202d0cfbf0d493327f49d18c",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 31,
+      "split": "test",
+      "split_sample_id": 8,
+      "question_sha256": "e887804fa620e94444b02ca7e32b19351f70bb591559b78f17321db569851685",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 32,
+      "split": "test",
+      "split_sample_id": 9,
+      "question_sha256": "7f974e6212ce15e2bda46083a8b2f9ba4bcfc7e4c0d733d58f88c219284d6250",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 39,
+      "split": "test",
+      "split_sample_id": 10,
+      "question_sha256": "cf38bb40e1e3f7da8013ff1cda0561948e1795053e599ae4e9e8814b12b81250",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 40,
+      "split": "test",
+      "split_sample_id": 11,
+      "question_sha256": "afe02be0d3b0051b430d9d1d032d792207cab0a532f586f0c9c882d0d6ece968",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 47,
+      "split": "test",
+      "split_sample_id": 12,
+      "question_sha256": "d42fd7ad887d0add892a935d8b4102c0c0ae324c1dafb9fdbd8146f4dd1a758e",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 51,
+      "split": "test",
+      "split_sample_id": 13,
+      "question_sha256": "5e57e659444ad8b850dae1ac039d7a8eb8524c21385439e09ccbeb19b57b9827",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 53,
+      "split": "test",
+      "split_sample_id": 14,
+      "question_sha256": "a1e499ce539a2b4145ab2421388119a852bd8b7cbd82df45022854b107fb70c6",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 58,
+      "split": "test",
+      "split_sample_id": 15,
+      "question_sha256": "17fdf1eec9f2eb2a5ed9a153d2a4a92b6ff2668a66bd12af056b9c8133487a0f",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 59,
+      "split": "test",
+      "split_sample_id": 16,
+      "question_sha256": "7edc773bbf8692a2c07cb64fdb903ec13dcac779c651e24d7acc04e67f4440e8",
+      "target_subagent": "team_profile"
+    },
+    {
+      "original_sample_id": 61,
+      "split": "test",
+      "split_sample_id": 17,
+      "question_sha256": "178af59eaf9488702fd25aac5492c086859455f819fd68da5870c633ec46d262",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 62,
+      "split": "test",
+      "split_sample_id": 18,
+      "question_sha256": "136a45e949591e730b6d2129c7e1cec2706e8faba56840c24996203600e561f2",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 63,
+      "split": "test",
+      "split_sample_id": 19,
+      "question_sha256": "2100fcc1ec861075c09601464a56a8e8c9ffe80ef96bf973f9c27f168b401df9",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 66,
+      "split": "test",
+      "split_sample_id": 20,
+      "question_sha256": "148b2310228bf1bf66eecd0dd773338425c021c14950b5e0b07f0ac9b687b9e1",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 70,
+      "split": "test",
+      "split_sample_id": 21,
+      "question_sha256": "ea52f7e9db0065904a707f16c92a89ac32aa25678775dbf6f39f38ec9c97430e",
+      "target_subagent": "grill"
+    },
+    {
+      "original_sample_id": 79,
+      "split": "test",
+      "split_sample_id": 22,
+      "question_sha256": "0cd9f21fd8831c053f4ddfae88c9fec6df3f71b55e73bb62d6ea1da19d68cb73",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 81,
+      "split": "test",
+      "split_sample_id": 23,
+      "question_sha256": "a089278165077ce30bd773c26211a6bcfc3079e73f35908b65ff9561f831439a",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 86,
+      "split": "test",
+      "split_sample_id": 24,
+      "question_sha256": "4f664f6371e8f043552be849ad2545b6bfd90c09f9ac2206188b01d23d01cf21",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 90,
+      "split": "test",
+      "split_sample_id": 25,
+      "question_sha256": "4667c2dad0c3b3dccad47bc456e75c1454ce2e1f2678c6f3867484b723989726",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 91,
+      "split": "test",
+      "split_sample_id": 26,
+      "question_sha256": "a1c768506a990062d6580fe411f3e01b5dcd26c624133b0ba0adfd8fe1c8b678",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 93,
+      "split": "test",
+      "split_sample_id": 27,
+      "question_sha256": "d2809258a55c0287ae04b80450d1f884bfe9ad71a33bf33819ddda72bd270b2d",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 95,
+      "split": "test",
+      "split_sample_id": 28,
+      "question_sha256": "81943c67dad6c06a519f3468da5de94a7f8b8ad7bffb1a7332ca3785b5f41fc8",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 98,
+      "split": "test",
+      "split_sample_id": 29,
+      "question_sha256": "b7efd0544cb1d1ce6a327aa333b9f3d596aef15bd4253eace556e27e648ebbe5",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 101,
+      "split": "test",
+      "split_sample_id": 30,
+      "question_sha256": "b93a18ad44da9025efddfeefb0061666d80ab3150800c71be1dab83f160790ff",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 104,
+      "split": "test",
+      "split_sample_id": 31,
+      "question_sha256": "211b90f9fa6e4a1bb572b568c8005fe4d88d53b1ebf95d03d2b22f92166f3ad5",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 105,
+      "split": "test",
+      "split_sample_id": 32,
+      "question_sha256": "5900bc2304c758cc1769139942ae0630989edbf12e12eba9b5b76c388d866e41",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 106,
+      "split": "test",
+      "split_sample_id": 33,
+      "question_sha256": "feeda346c9fbd44749a2c5860676576b1a206a7040772e295347beff74d6d684",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 107,
+      "split": "test",
+      "split_sample_id": 34,
+      "question_sha256": "7e3afc2b95586810ec6c003ef33dd3dc3a737cb0fcd87699c13ccfeb2c821c48",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 110,
+      "split": "test",
+      "split_sample_id": 35,
+      "question_sha256": "14b9ae81c401785af4c0a4bfa472a816b8fcf8a32b63edbb2d6a388ff575e15d",
+      "target_subagent": "ai-coach"
+    },
+    {
+      "original_sample_id": 119,
+      "split": "test",
+      "split_sample_id": 36,
+      "question_sha256": "4ba23d48600e380ee786bd05e0c15ec790b498fa91008f11a3b90a17bbda5684",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 123,
+      "split": "test",
+      "split_sample_id": 37,
+      "question_sha256": "4669537daf61593dc72fe7e2c5a3114cfac8f341d1282d008a2e57d88ceb1d63",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 125,
+      "split": "test",
+      "split_sample_id": 38,
+      "question_sha256": "ad25449bcd4e0bb87b2d46c0611c1bdd5d96403a3a189d6a5d7068f3457e1f50",
+      "target_subagent": "top600-successor-rotation"
+    },
+    {
+      "original_sample_id": 128,
+      "split": "test",
+      "split_sample_id": 39,
+      "question_sha256": "8cb680fb9438b92d8b06ff8a78243051d019bba33f667ac9d8adf82b0e5a0c3f",
+      "target_subagent": "recruiter"
+    },
+    {
+      "original_sample_id": 133,
+      "split": "test",
+      "split_sample_id": 40,
+      "question_sha256": "b853650a651e91c8293aefbc811d909492d267634cb6e7396fd9fa54cef63efd",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 135,
+      "split": "test",
+      "split_sample_id": 41,
+      "question_sha256": "656ba2562a7aebca10a64089b940fba7330d7d0478350762fa62776ec66f5ecb",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 143,
+      "split": "test",
+      "split_sample_id": 42,
+      "question_sha256": "0c4bc860e2c2c89939c74f7d613e505dfbd135a8cf154d3b63cd9766778d184b",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 145,
+      "split": "test",
+      "split_sample_id": 43,
+      "question_sha256": "d9aae6a7244f9b6459978f51eb77d4b63c9bf4aba853ea104be3e37a05d99edc",
+      "target_subagent": "talent-research"
+    },
+    {
+      "original_sample_id": 147,
+      "split": "test",
+      "split_sample_id": 44,
+      "question_sha256": "27ed1f949235fa88548aca7d00ea8fe01ba072a12fb23e72e58d973a3b6f6cd3",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 150,
+      "split": "test",
+      "split_sample_id": 45,
+      "question_sha256": "85e054faac04911ad8b3324d2b5e278be4df6210bfa445a1f8ea768768556d96",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 151,
+      "split": "test",
+      "split_sample_id": 46,
+      "question_sha256": "772cdf2b7cd47f6ce204c510a42be1e71f60c77060a453bc514eb788791e7b9c",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 156,
+      "split": "test",
+      "split_sample_id": 47,
+      "question_sha256": "94e4df9272f8bc473441ffc3ce39a5dba84e061615fac226a7c7e1feab9e8cf1",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 160,
+      "split": "test",
+      "split_sample_id": 48,
+      "question_sha256": "fe5557aa5f48ed845e2cd207b9f222876a0a67bc2a2dfbc2eb9d965ab2d1a0b1",
+      "target_subagent": "vacation"
+    },
+    {
+      "original_sample_id": 162,
+      "split": "test",
+      "split_sample_id": 49,
+      "question_sha256": "b649c4eb4f45eb6cad8175b0329c641b7818025ed36ac0eaafea7deb8a12cefa",
+      "target_subagent": "hrp-analytics"
+    },
+    {
+      "original_sample_id": 166,
+      "split": "test",
+      "split_sample_id": 50,
+      "question_sha256": "87cbe1d19ab8d047acb1a3f6ed5f4635ead79d70d74160e6a4b0943d999a2cd9",
+      "target_subagent": "education"
+    },
+    {
+      "original_sample_id": 168,
+      "split": "test",
+      "split_sample_id": 51,
+      "question_sha256": "e6d10e21650b7668b1b5d79034526805660aba16697cd84029aa7996a59d2afd",
+      "target_subagent": "education"
+    },
+    {
+      "original_sample_id": 170,
+      "split": "test",
+      "split_sample_id": 52,
+      "question_sha256": "021f486e3c48930408a7ed9d055eeafadfd420d08de0fdc853ea270e43aacdbf",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 174,
+      "split": "test",
+      "split_sample_id": 53,
+      "question_sha256": "7d23ffa4431641d15492e41e580170c2957f5266c58f0b6b8b97323bf1e6cb20",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 177,
+      "split": "test",
+      "split_sample_id": 54,
+      "question_sha256": "82d463d433be294f5e12655b95ea8662bfd132db3745a92ebf81147b5b51d82c",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 178,
+      "split": "test",
+      "split_sample_id": 55,
+      "question_sha256": "6db9ce48b4fc6194b31f99b727ce221cefb149e3e0dea6e3c6f702a238b99410",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 179,
+      "split": "test",
+      "split_sample_id": 56,
+      "question_sha256": "0beb2ae1b534312e9b4fd2ccf7839508113161a27833cfa827bf706f2d47f591",
+      "target_subagent": "mcp_internet"
+    },
+    {
+      "original_sample_id": 188,
+      "split": "test",
+      "split_sample_id": 57,
+      "question_sha256": "e4b7e2a030ff6b449e1bbff6bfc30c5f4f4445e0b5c5b36c0391c5523bb9c44f",
+      "target_subagent": "onboarding_top_600"
+    }
+  ],
+  "files_sha256": {
+    "author_train_input.json": "ca7093e3550169d8286f162c0e72f3ef22636ec1678f978c2ac744dda74b4149",
+    "bucket_full.csv": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+    "bucket_full.jsonl": "eb35170b9d9f95ae55317c06b74b618ca57c219f300d8312d3a35869b5030157",
+    "bucket_test.csv": "853ca2543e82e829a9385010905d63032760811c6643e4254c28529d1658a0e6",
+    "bucket_test.jsonl": "7cfbca768921aae8070562215b2d6b52174431a4138a5beab7afcf548b9ef546",
+    "bucket_train.csv": "2e420289927cb327c0ebe04980aab74e0c102914f3d447d50e9be0e11bd11bfb",
+    "bucket_train.jsonl": "fc01343e51d861308d496c6a9677d6c6414db25bae6a85a0928d12e787aac061",
+    "catalog_enabled.jsonl": "b9d72ed1398d2360ea35212d669dd7ca37dde5a91f2ca718ee331c092a7eaee0"
+  }
+}

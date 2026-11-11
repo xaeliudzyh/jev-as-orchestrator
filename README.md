@@ -10,16 +10,23 @@
 Основной вход exp2 — `exp2/run_exp2.py`: по умолчанию два этапа с сохранением
 первых вызовов также в `experiments/exp2/1-step/`. Флаг `--one-step-only`
 отключает второй этап. Русская сценарная политика используется по умолчанию;
-английская — `--system-prompt exp2/routing_scenarios_en_exp2.txt`.
+английская — `--system-prompt exp2/prompts/routing_scenarios_en_exp2.txt`.
 Подробности, команды Jev/Luna и происхождение правил — в [exp2/README.md](exp2/README.md).
-Для проверки переноса добавлены общие промпты `exp2/routing_general_ru_exp2.txt`
-и `exp2/routing_general_en_exp2.txt`, выбираемые через --system-prompt.
+Для проверки переноса добавлены общие промпты `exp2/prompts/routing_general_ru_exp2.txt`
+и `exp2/prompts/routing_general_en_exp2.txt`, выбираемые через --system-prompt.
 [Аудит последних результатов и подгонки по gold](experiments/exp2/analysis/prompt_generalization_20261109/README.md).
 
 Общие адаптеры моделей, движок оценки и CLI: `routing_bench/`.
 Файлы конкретного эксперимента имеют суффикс `_exp1` / `_exp2`.
 Старые корневые `run_hf.py` и `run_openrouter.py` перенесены в `exp1/`.
 Пути по умолчанию привязаны к корню репозитория, а не к текущей рабочей папке.
+
+Промпты находятся отдельно от Python-кода: `exp1/prompts/` и `exp2/prompts/`.
+Путь к другому промпту передаётся через `--system-prompt`, например
+`--system-prompt exp2/prompts/routing_train70_ru_exp2.txt`.
+Содержимое файлов при переносе не менялось. Старые пути в исторических
+`config.json`, отчётах provenance и `prompt_freeze.json` отражают расположение
+на момент запуска; проверка сохранённых результатов использует текст и SHA-256.
 
 Общий справочник: [OpenSourceModels.md](OpenSourceModels.md).
 Форматы нативных SDK: [docs/model_io.md](docs/model_io.md).

@@ -15,7 +15,7 @@ OPENROUTER_ENDPOINT = "https://openrouter.ai/api/alpha/decisions"
 
 def parser_exp2(default_backend="openrouter"):
     parser = hf_parser("exp2: subagent routing, two-stage by default", "exp2",
-                       default_strategy="2-step", default_prompt=ROOT / "exp2/routing_scenarios_ru_exp2.txt")
+                       default_strategy="2-step", default_prompt=ROOT / "exp2/prompts/routing_scenarios_ru_exp2.txt")
     parser.add_argument("--backend", choices=("openrouter", "hf"), default=default_backend,
                         help="openrouter (default) or Hugging Face local/native API")
     parser.set_defaults(endpoint=None, api_key_env=None, export_stage1=True)

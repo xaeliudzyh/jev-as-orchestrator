@@ -1,5 +1,10 @@
 # exp2: subagent routing
 
+Все `.txt` промпты находятся в [prompts/](prompts/), отдельно от скриптов.
+Сценарный RU по умолчанию — `exp2/prompts/routing_scenarios_ru_exp2.txt`;
+train70 RU — `exp2/prompts/routing_train70_ru_exp2.txt`. Старые пути в сохранённых
+JSON-артефактах являются provenance; тексты и их SHA-256 при переносе сохранены.
+
 По умолчанию используются **193 запроса** из
 `data/subagent_routing_exp2/subagents_routing_bucket_only_enabled.csv` и
 **17 включённых субагентов** из `subagents_routing_corpus.csv`, отфильтрованного
@@ -67,7 +72,7 @@ python3 exp2/run_exp2.py --model openai/gpt-6-luna-decisions --one-step-only
 
 # Альтернативы: shortlist=3, английская версия политики, полный каталог.
 python3 exp2/run_exp2.py --model typesafe/jev-1.14 --shortlist-k 3
-python3 exp2/run_exp2.py --model typesafe/jev-1.14 --system-prompt exp2/routing_scenarios_en_exp2.txt
+python3 exp2/run_exp2.py --model typesafe/jev-1.14 --system-prompt exp2/prompts/routing_scenarios_en_exp2.txt
 python3 exp2/run_exp2.py --model typesafe/jev-1.14 --include-disabled
 ```
 
@@ -90,8 +95,8 @@ python3 exp2/run_exp2.py --model typesafe/jev-1.14 --include-disabled \
 
 ## Сценарная политика в промпте
 
-Новые эквивалентные версии: [русская](routing_scenarios_ru_exp2.txt) (default)
-и [английская](routing_scenarios_en_exp2.txt). Старые `routing_exp2.txt` и
+Новые эквивалентные версии: [русская](prompts/routing_scenarios_ru_exp2.txt) (default)
+и [английская](prompts/routing_scenarios_en_exp2.txt). Старые `routing_exp2.txt` и
 `EN_routing_exp2.txt` сохранены для контрольных сравнений; выбрать любой можно
 через `--system-prompt PATH`. Один и тот же текст применяется на обоих этапах.
 
@@ -126,8 +131,8 @@ sample_id → label или копирования всей корзины в и�
 
 ## Общий промпт для проверки переноса
 
-Добавлены [routing_general_ru_exp2.txt](routing_general_ru_exp2.txt) и
-[routing_general_en_exp2.txt](routing_general_en_exp2.txt). В них нет имён агентов,
+Добавлены [routing_general_ru_exp2.txt](prompts/routing_general_ru_exp2.txt) и
+[routing_general_en_exp2.txt](prompts/routing_general_en_exp2.txt). В них нет имён агентов,
 эталонных маршрутов, догадок о скрытом сегменте пользователя и правил,
 добавляющих отсутствующие в каталоге возможности. Выбор строится по действию,
 объекту, ожидаемому результату, источникам данных и явно указанным ограничениям.
@@ -138,13 +143,13 @@ sample_id → label или копирования всей корзины в и�
 
 ```bash
 python3 exp2/run_exp2.py --model typesafe/jev-1.14 \
-  --system-prompt exp2/routing_general_ru_exp2.txt
+  --system-prompt exp2/prompts/routing_general_ru_exp2.txt
 python3 exp2/run_exp2.py --model openai/gpt-6-luna-decisions \
-  --system-prompt exp2/routing_general_ru_exp2.txt
+  --system-prompt exp2/prompts/routing_general_ru_exp2.txt
 
 # Английская версия; оба этапа и отдельные метрики также сохраняются.
 python3 exp2/run_exp2.py --model typesafe/jev-1.14 \
-  --system-prompt exp2/routing_general_en_exp2.txt
+  --system-prompt exp2/prompts/routing_general_en_exp2.txt
 ```
 
 `--one-step-only` работает с любым промптом. Новый общий вариант проверен только
@@ -266,13 +271,13 @@ python3 exp2/run_exp2.py --backend hf --mode api --api-format cloudflare \
   --model clef-flash \
   --endpoint "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/run/@cf/cloudflare/clef-flash" \
   --api-key-env CLOUDFLARE_API_TOKEN \
-  --system-prompt exp2/routing_general_en_exp2.txt --shortlist-k 5 --timeout 180
+  --system-prompt exp2/prompts/routing_general_en_exp2.txt --shortlist-k 5 --timeout 180
 
 python3 exp2/run_exp2.py --backend hf --mode api --api-format cloudflare \
   --model clef \
   --endpoint "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/run/@cf/cloudflare/clef" \
   --api-key-env CLOUDFLARE_API_TOKEN \
-  --system-prompt exp2/routing_general_en_exp2.txt --shortlist-k 5 --timeout 180
+  --system-prompt exp2/prompts/routing_general_en_exp2.txt --shortlist-k 5 --timeout 180
 ```
 
 Здесь backend hf обозначает общий путь local/native HTTP; сам запрос идёт
@@ -405,3 +410,108 @@ API-ошибки и отсутствующий confidence учитываются
 Это подбор на той же корзине, а не независимая оценка production-качества.
 В раннер автоматический отказ по confidence не добавлен: отчёт оценивает фильтр
 постфактум, существующие результаты не перезаписываются.
+
+## Промпт по train 70% и отложенный test 30%
+
+Новый [русский сценарный промпт](prompts/routing_train70_ru_exp2.txt) создан по
+фиксированному train отдельным изолированным автором без истории этого чата.
+Ему переданы только 135 train-примеров и статический каталог 17 кандидатов.
+Чтение репозитория/test/старого промпта запрещено Landlock; в успешном trace
+нет вызовов инструментов. Промпт сохранён без содержательных правок и заморожен
+до тестирования. Новые Jev/Luna-метрики ещё не получены: ниже команды для прогона.
+Исходная корзина и промпт по умолчанию не меняются. В
+`data/subagent_routing_exp2/splits/stratified70_seed42/` лежат:
+
+- `bucket_full.csv/jsonl`: снимок текущих 193 вопросов;
+- `bucket_train.csv/jsonl`: 135 вопросов для автора промпта;
+- `bucket_test.csv/jsonl`: 58 отложенных вопросов;
+- `manifest.json`: seed=42, распределение меток, исходные sample_id и хеши;
+- `author_train_input.json`: только 135 пар query/target и статический каталог
+  17 включённых кандидатов с descriptions/full texts; без test, skill_name,
+  старых промптов и результатов;
+- `prompt_freeze.json`: хеш зафиксированного промпта и происхождение;
+- `README.md`: протокол разбиения, авторства и ограничения оценки.
+
+Стратификация идёт по `SubAgent`: все 12 меток из корзины есть в обеих частях.
+Для `grill`/`recruiter`, у которых всего по два примера, получается 1/1.
+Глобально размер test — `ceil(193 * 0.30) = 58`; квоты распределяются по
+наибольшему недобору от 30%, с минимумом по одному примеру в каждой части.
+При равных квотах используется алфавитный порядок меток. Внутри метки
+принадлежность задаёт SHA-256 от seed/метки/исходного индекса/вопроса.
+Порядок строк в экспортированных частях сохраняется. Дубликаты после
+NFKC/casefold/нормализации пробелов запрещены; похожие перефразировки отдельно
+не группируются. Пять кандидатов без gold-примеров остаются кандидатами.
+
+Воспроизвести разбиение в **новой** директории:
+
+```bash
+python3 exp2/prepare_holdout_exp2.py --seed 42 --output-dir /tmp/exp2-split-check
+```
+
+Два полных прогона нового промпта (каждый сохраняет 1-step и 2-step):
+
+```bash
+python3 exp2/run_exp2.py --model typesafe/jev-1.14 \
+  --system-prompt exp2/prompts/routing_train70_ru_exp2.txt \
+  --bucket data/subagent_routing_exp2/splits/stratified70_seed42/bucket_full.csv \
+  --shortlist-k 5 --output-dir experiments/exp2/train70_seed42
+
+python3 exp2/run_exp2.py --model openai/gpt-6-luna-decisions \
+  --system-prompt exp2/prompts/routing_train70_ru_exp2.txt \
+  --bucket data/subagent_routing_exp2/splits/stratified70_seed42/bucket_full.csv \
+  --shortlist-k 5 --output-dir experiments/exp2/train70_seed42
+```
+
+После них — оценка тех же ответов на full/train/test, **без повторных API-вызовов**:
+
+```bash
+python3 exp2/evaluate_holdout_exp2.py \
+  --runs-root experiments/exp2/train70_seed42 \
+  --output-dir experiments/exp2/analysis/train70_seed42
+```
+
+В отчёте будут `accuracy@1/3/5` и числа ошибок для каждого среза и этапа.
+Проверяются полный снимок корзины, каталог, зафиксированный промпт, соответствие
+sample_id/вопросов/gold и исходных метрик. Ошибки API считаются промахами.
+Неполные/несовместимые результаты не выдаются за полную оценку. Для повторов
+выбирается последний совместимый завершённый результат каждой модели/стратегии.
+Output-dir отчёта должна быть новой. Для только 1-step добавь к запуску
+`--one-step-only`; отчёт обработает доступные first-stage результаты.
+
+Главная оценка обобщения — **test**, а full включает train и служит описательной
+сводкой. Промпт фиксируется до получения новых test-метрик. После изменения по
+test-промахам этот test становится данными разработки. Предыдущие промпты уже
+видели все 193 вопроса: их метрики на этих 58 вопросах не являются таким же
+holdout-контролем. Разбиение строк внутри одного набора также не заменяет
+проверку на новых сценариях/временном срезе production.
+
+## Сценарный 100 против сценарного 70 и новые модели
+
+[Сводная таблица full/test для Jev/Luna](../experiments/exp2/analysis/scenario100_vs_train70_20261111/README.md)
+сравнивает `routing_scenarios_ru_exp2.txt` (правила по всем 193) и
+`routing_train70_ru_exp2.txt` (отдельный автор по 135 train) на одних 193/58 вопросах,
+для 1-step и 2-step, @1/@3/@5. У промпта 100 это ретроспективный срез известных
+при разработке данных, у 70 — ранее отложенная часть для авторства промпта.
+
+`evaluate_holdout_exp2.py` теперь принимает явный список `--models MODEL ...`.
+Дефолт остаётся Jev 1.14/Luna; для Clef укажи `--models Cloudflare/clef-flash`
+или `--models Cloudflare/clef`. Для другого промпта, разработанного по полной
+корзине, укажи `--prompt exp2/prompts/routing_scenarios_ru_exp2.txt` и
+`--prompt-evaluation retrospective`. Этот режим **не изменяет** freeze 70:
+он маркирует test exposure и проверяет хеш/текст выбранного промпта во всех
+артефактах, сохраняя проверки данных, запросов, нативных rankings и метрик.
+Без него сохраняется строгая привязка к зафиксированному промпту 70.
+
+[Команды Clef 9B/27B для обоих промптов и расчёта test](../experiments/exp2/analysis/scenario100_vs_train70_20261111/CLEF_COMMANDS.md)
+включают готовый batch-скрипт, использующий `.venv-clef`. На текущих 16 GiB
+стартовый локальный вариант — 9B BNB4. 27B текущим loader на 16 GiB не помещается;
+его команды предназначены для GPU с большей VRAM. CPU-offload не добавлялся.
+
+```bash
+bash experiments/exp2/analysis/scenario100_vs_train70_20261111/run_clef_scenarios.sh 9b
+```
+
+Batch-скрипт последовательно запускает оба промпта в 4-bit, сохраняет обе стратегии,
+а затем рассчитывает full/train/test из тех же ответов без повторного инференса.
+Флаг `--dry-run` после `9b` или `27b` проверяет только данные/CLI и пишет в /tmp;
+память GPU и успешный инференс это не проверяет.

@@ -23,11 +23,15 @@ def parser_exp2(default_backend="openrouter"):
 
 
 def prepare_args_exp2(args):
+    if args.api_format == "cloudflare" and (args.backend != "hf" or args.mode != "api"):
+        raise ValueError("--api-format cloudflare requires --backend hf --mode api")
+    if args.api_format == "cloudflare" and args.model not in {"clef", "clef-flash"}:
+        raise ValueError("Cloudflare Clef REST API requires --model clef or clef-flash")
     if args.backend == "openrouter":
         args.endpoint = args.endpoint or OPENROUTER_ENDPOINT
         args.api_key_env = args.api_key_env or "OPENROUTER_API_KEY"
     else:
-        args.api_key_env = args.api_key_env or "HF_TOKEN"
+        args.api_key_env = args.api_key_env or ("CLOUDFLARE_API_TOKEN" if args.api_format == "cloudflare" else "HF_TOKEN")
         if args.mode == "api" and not args.endpoint:
             raise ValueError("--backend hf --mode api requires an explicit --endpoint")
 

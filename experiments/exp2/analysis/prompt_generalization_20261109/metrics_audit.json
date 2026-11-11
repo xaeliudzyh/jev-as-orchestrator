@@ -1,0 +1,840 @@
+{
+  "runs": [
+    {
+      "model": "jev",
+      "model_id": "typesafe/jev-1.14",
+      "stage": 1,
+      "run": "experiments/exp2/1-step/typesafe__jev-1.14_20261109T140439.499619+0300",
+      "metrics": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 181,
+          "accuracy@3": 192,
+          "accuracy@5": 193
+        },
+        "accuracy@1": 0.9378238341968912,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 1.0,
+        "status": "completed",
+        "evaluated_stage": 1,
+        "n_samples_planned": 193,
+        "n_samples_unprocessed": 0,
+        "n_errors": 0,
+        "complete": true,
+        "missing_labels": [],
+        "n_unreachable_samples": 0,
+        "elapsed_seconds": 54.008778210038145,
+        "inference_seconds": 54.008778210038145,
+        "stage_inference_seconds": {
+          "1": 54.008778210038145
+        },
+        "timing_scope": "sum_of_recorded_stage_1_calls_in_shared_pipeline",
+        "pipeline_elapsed_seconds": 120.831262,
+        "pipeline_status": "completed",
+        "pipeline_error": null,
+        "error": null
+      },
+      "recomputed": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 181,
+          "accuracy@3": 192,
+          "accuracy@5": 193
+        },
+        "accuracy@1": 0.9378238341968912,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 1.0
+      },
+      "per_class": [
+        {
+          "gold": "agentic_skills",
+          "n": 8,
+          "hits": 7
+        },
+        {
+          "gold": "ai-coach",
+          "n": 25,
+          "hits": 24
+        },
+        {
+          "gold": "education",
+          "n": 7,
+          "hits": 7
+        },
+        {
+          "gold": "grill",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "hrp-analytics",
+          "n": 76,
+          "hits": 73
+        },
+        {
+          "gold": "mcp_internet",
+          "n": 18,
+          "hits": 17
+        },
+        {
+          "gold": "onboarding_top_600",
+          "n": 5,
+          "hits": 3
+        },
+        {
+          "gold": "recruiter",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "talent-research",
+          "n": 14,
+          "hits": 13
+        },
+        {
+          "gold": "team_profile",
+          "n": 12,
+          "hits": 9
+        },
+        {
+          "gold": "top600-successor-rotation",
+          "n": 11,
+          "hits": 11
+        },
+        {
+          "gold": "vacation",
+          "n": 13,
+          "hits": 13
+        }
+      ],
+      "fixed_vs_old_generic": [
+        3,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        42,
+        43,
+        45,
+        46,
+        47,
+        50,
+        51,
+        52,
+        53,
+        57,
+        58,
+        70,
+        71,
+        72,
+        73,
+        74,
+        82,
+        86,
+        102,
+        105,
+        108,
+        110,
+        113,
+        131,
+        139,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        157,
+        191
+      ],
+      "broken_vs_old_generic": [
+        190,
+        192
+      ],
+      "fixed_vs_stage_1": [],
+      "broken_vs_stage_1": [],
+      "confusions": {
+        "agentic_skills -> hrp-analytics": 1,
+        "hrp-analytics -> grill": 2,
+        "hrp-analytics -> metrics": 1,
+        "team_profile -> grill": 1,
+        "team_profile -> hrp-analytics": 2,
+        "ai-coach -> hrp-analytics": 1,
+        "talent-research -> recruiter": 1,
+        "mcp_internet -> grill": 1,
+        "onboarding_top_600 -> hrp-analytics": 2
+      },
+      "prompt_sha256": "aaeb3ff730999e26b11a6ea466c4cc54efa5bf6472e21744ccbd042440b0defe",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd"
+    },
+    {
+      "model": "jev",
+      "model_id": "typesafe/jev-1.14",
+      "stage": 2,
+      "run": "experiments/exp2/2-step/typesafe__jev-1.14_20261109T140439.499619+0300",
+      "metrics": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 182,
+          "accuracy@3": 192,
+          "accuracy@5": 193
+        },
+        "accuracy@1": 0.9430051813471503,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 1.0,
+        "status": "completed",
+        "evaluated_stage": 2,
+        "n_samples_planned": 193,
+        "n_samples_unprocessed": 0,
+        "n_errors": 0,
+        "complete": true,
+        "missing_labels": [],
+        "n_unreachable_samples": 0,
+        "elapsed_seconds": 120.831262,
+        "error": null,
+        "stage_inference_seconds": {
+          "1": 54.008778210038145,
+          "2": 66.61380487902716
+        },
+        "inference_seconds": 120.6225830890653,
+        "timing_scope": "pipeline_wall_time",
+        "stage_1_metrics": {
+          "n_samples": 193,
+          "hits": {
+            "accuracy@1": 181,
+            "accuracy@3": 192,
+            "accuracy@5": 193
+          },
+          "accuracy@1": 0.9378238341968912,
+          "accuracy@3": 0.9948186528497409,
+          "accuracy@5": 1.0
+        },
+        "shortlist_hit_rate": 1.0
+      },
+      "recomputed": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 182,
+          "accuracy@3": 192,
+          "accuracy@5": 193
+        },
+        "accuracy@1": 0.9430051813471503,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 1.0
+      },
+      "per_class": [
+        {
+          "gold": "agentic_skills",
+          "n": 8,
+          "hits": 8
+        },
+        {
+          "gold": "ai-coach",
+          "n": 25,
+          "hits": 21
+        },
+        {
+          "gold": "education",
+          "n": 7,
+          "hits": 7
+        },
+        {
+          "gold": "grill",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "hrp-analytics",
+          "n": 76,
+          "hits": 73
+        },
+        {
+          "gold": "mcp_internet",
+          "n": 18,
+          "hits": 17
+        },
+        {
+          "gold": "onboarding_top_600",
+          "n": 5,
+          "hits": 3
+        },
+        {
+          "gold": "recruiter",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "talent-research",
+          "n": 14,
+          "hits": 14
+        },
+        {
+          "gold": "team_profile",
+          "n": 12,
+          "hits": 11
+        },
+        {
+          "gold": "top600-successor-rotation",
+          "n": 11,
+          "hits": 11
+        },
+        {
+          "gold": "vacation",
+          "n": 13,
+          "hits": 13
+        }
+      ],
+      "fixed_vs_old_generic": [
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        50,
+        51,
+        52,
+        53,
+        54,
+        57,
+        58,
+        59,
+        70,
+        71,
+        72,
+        73,
+        74,
+        82,
+        86,
+        102,
+        105,
+        110,
+        131,
+        135,
+        139,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        157,
+        183,
+        191
+      ],
+      "broken_vs_old_generic": [
+        114,
+        186,
+        190,
+        192
+      ],
+      "fixed_vs_stage_1": [
+        4,
+        44,
+        54,
+        59,
+        135,
+        183
+      ],
+      "broken_vs_stage_1": [
+        19,
+        108,
+        113,
+        114,
+        186
+      ],
+      "confusions": {
+        "hrp-analytics -> service_navigation": 1,
+        "hrp-analytics -> grill": 2,
+        "team_profile -> grill": 1,
+        "ai-coach -> hrp-analytics": 3,
+        "ai-coach -> mcp_internet": 1,
+        "mcp_internet -> grill": 1,
+        "onboarding_top_600 -> hrp-analytics": 2
+      },
+      "prompt_sha256": "aaeb3ff730999e26b11a6ea466c4cc54efa5bf6472e21744ccbd042440b0defe",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd"
+    },
+    {
+      "model": "luna",
+      "model_id": "openai/gpt-6-luna-decisions",
+      "stage": 1,
+      "run": "experiments/exp2/1-step/openai__gpt-6-luna-decisions_20261109T140105.681731+0300",
+      "metrics": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 176,
+          "accuracy@3": 192,
+          "accuracy@5": 193
+        },
+        "accuracy@1": 0.9119170984455959,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 1.0,
+        "status": "completed",
+        "evaluated_stage": 1,
+        "n_samples_planned": 193,
+        "n_samples_unprocessed": 0,
+        "n_errors": 0,
+        "complete": true,
+        "missing_labels": [],
+        "n_unreachable_samples": 0,
+        "elapsed_seconds": 63.27186228100618,
+        "inference_seconds": 63.27186228100618,
+        "stage_inference_seconds": {
+          "1": 63.27186228100618
+        },
+        "timing_scope": "sum_of_recorded_stage_1_calls_in_shared_pipeline",
+        "pipeline_elapsed_seconds": 144.615674,
+        "pipeline_status": "completed_with_errors",
+        "pipeline_error": null,
+        "error": null
+      },
+      "recomputed": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 176,
+          "accuracy@3": 192,
+          "accuracy@5": 193
+        },
+        "accuracy@1": 0.9119170984455959,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 1.0
+      },
+      "per_class": [
+        {
+          "gold": "agentic_skills",
+          "n": 8,
+          "hits": 7
+        },
+        {
+          "gold": "ai-coach",
+          "n": 25,
+          "hits": 22
+        },
+        {
+          "gold": "education",
+          "n": 7,
+          "hits": 6
+        },
+        {
+          "gold": "grill",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "hrp-analytics",
+          "n": 76,
+          "hits": 67
+        },
+        {
+          "gold": "mcp_internet",
+          "n": 18,
+          "hits": 18
+        },
+        {
+          "gold": "onboarding_top_600",
+          "n": 5,
+          "hits": 4
+        },
+        {
+          "gold": "recruiter",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "talent-research",
+          "n": 14,
+          "hits": 13
+        },
+        {
+          "gold": "team_profile",
+          "n": 12,
+          "hits": 11
+        },
+        {
+          "gold": "top600-successor-rotation",
+          "n": 11,
+          "hits": 11
+        },
+        {
+          "gold": "vacation",
+          "n": 13,
+          "hits": 13
+        }
+      ],
+      "fixed_vs_old_generic": [
+        3,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        23,
+        25,
+        26,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        39,
+        42,
+        43,
+        45,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        57,
+        58,
+        59,
+        70,
+        71,
+        72,
+        73,
+        82,
+        86,
+        105,
+        108,
+        110,
+        113,
+        124,
+        131,
+        136,
+        137,
+        139,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        157,
+        166,
+        175,
+        178,
+        179,
+        183,
+        186,
+        187,
+        191,
+        192
+      ],
+      "broken_vs_old_generic": [],
+      "fixed_vs_stage_1": [],
+      "broken_vs_stage_1": [],
+      "confusions": {
+        "agentic_skills -> hrp-analytics": 1,
+        "hrp-analytics -> mcp_internet": 1,
+        "hrp-analytics -> service_navigation": 4,
+        "hrp-analytics -> grill": 2,
+        "hrp-analytics -> metrics": 2,
+        "team_profile -> hrp-analytics": 1,
+        "ai-coach -> hrp-analytics": 2,
+        "ai-coach -> mcp_internet": 1,
+        "talent-research -> recruiter": 1,
+        "education -> hrp-analytics": 1,
+        "onboarding_top_600 -> hrp-analytics": 1
+      },
+      "prompt_sha256": "aaeb3ff730999e26b11a6ea466c4cc54efa5bf6472e21744ccbd042440b0defe",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd"
+    },
+    {
+      "model": "luna",
+      "model_id": "openai/gpt-6-luna-decisions",
+      "stage": 2,
+      "run": "experiments/exp2/2-step/openai__gpt-6-luna-decisions_20261109T140105.681731+0300",
+      "metrics": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 176,
+          "accuracy@3": 192,
+          "accuracy@5": 192
+        },
+        "accuracy@1": 0.9119170984455959,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 0.9948186528497409,
+        "status": "completed_with_errors",
+        "evaluated_stage": 2,
+        "n_samples_planned": 193,
+        "n_samples_unprocessed": 0,
+        "n_errors": 1,
+        "complete": true,
+        "missing_labels": [],
+        "n_unreachable_samples": 0,
+        "elapsed_seconds": 144.615674,
+        "error": null,
+        "stage_inference_seconds": {
+          "1": 63.27186228100618,
+          "2": 81.14142254599938
+        },
+        "inference_seconds": 144.41328482700555,
+        "timing_scope": "pipeline_wall_time",
+        "stage_1_metrics": {
+          "n_samples": 193,
+          "hits": {
+            "accuracy@1": 176,
+            "accuracy@3": 192,
+            "accuracy@5": 193
+          },
+          "accuracy@1": 0.9119170984455959,
+          "accuracy@3": 0.9948186528497409,
+          "accuracy@5": 1.0
+        },
+        "shortlist_hit_rate": 1.0
+      },
+      "recomputed": {
+        "n_samples": 193,
+        "hits": {
+          "accuracy@1": 176,
+          "accuracy@3": 192,
+          "accuracy@5": 192
+        },
+        "accuracy@1": 0.9119170984455959,
+        "accuracy@3": 0.9948186528497409,
+        "accuracy@5": 0.9948186528497409
+      },
+      "per_class": [
+        {
+          "gold": "agentic_skills",
+          "n": 8,
+          "hits": 8
+        },
+        {
+          "gold": "ai-coach",
+          "n": 25,
+          "hits": 22
+        },
+        {
+          "gold": "education",
+          "n": 7,
+          "hits": 6
+        },
+        {
+          "gold": "grill",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "hrp-analytics",
+          "n": 76,
+          "hits": 66
+        },
+        {
+          "gold": "mcp_internet",
+          "n": 18,
+          "hits": 18
+        },
+        {
+          "gold": "onboarding_top_600",
+          "n": 5,
+          "hits": 4
+        },
+        {
+          "gold": "recruiter",
+          "n": 2,
+          "hits": 2
+        },
+        {
+          "gold": "talent-research",
+          "n": 14,
+          "hits": 13
+        },
+        {
+          "gold": "team_profile",
+          "n": 12,
+          "hits": 11
+        },
+        {
+          "gold": "top600-successor-rotation",
+          "n": 11,
+          "hits": 11
+        },
+        {
+          "gold": "vacation",
+          "n": 13,
+          "hits": 13
+        }
+      ],
+      "fixed_vs_old_generic": [
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        23,
+        25,
+        26,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        39,
+        42,
+        43,
+        45,
+        49,
+        50,
+        51,
+        52,
+        53,
+        55,
+        57,
+        58,
+        59,
+        70,
+        73,
+        82,
+        86,
+        105,
+        108,
+        110,
+        113,
+        124,
+        131,
+        136,
+        137,
+        139,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        157,
+        166,
+        175,
+        178,
+        179,
+        183,
+        186,
+        187,
+        191,
+        192
+      ],
+      "broken_vs_old_generic": [
+        79
+      ],
+      "fixed_vs_stage_1": [
+        4,
+        14,
+        29,
+        55
+      ],
+      "broken_vs_stage_1": [
+        54,
+        71,
+        72,
+        79
+      ],
+      "confusions": {
+        "hrp-analytics -> service_navigation": 4,
+        "hrp-analytics -> metrics": 2,
+        "team_profile -> agentic_skills": 1,
+        "hrp-analytics -> meetings": 2,
+        "hrp-analytics -> None": 1,
+        "hrp-analytics -> team_profile": 1,
+        "ai-coach -> hrp-analytics": 2,
+        "ai-coach -> mcp_internet": 1,
+        "talent-research -> recruiter": 1,
+        "education -> hrp-analytics": 1,
+        "onboarding_top_600 -> hrp-analytics": 1
+      },
+      "prompt_sha256": "aaeb3ff730999e26b11a6ea466c4cc54efa5bf6472e21744ccbd042440b0defe",
+      "bucket_sha256": "7357b93a64e7a7432f53a7b5506474dda2e1804199140dd20dd2c79d6aca07ff",
+      "corpus_sha256": "bb39393686bfc937d7e3436a6a28244cfb14c58c403e77ffa66deaf0c070c2fd"
+    }
+  ],
+  "integrity_problems": []
+}

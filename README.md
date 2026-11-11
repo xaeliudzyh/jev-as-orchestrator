@@ -12,6 +12,9 @@
 отключает второй этап. Русская сценарная политика используется по умолчанию;
 английская — `--system-prompt exp2/routing_scenarios_en_exp2.txt`.
 Подробности, команды Jev/Luna и происхождение правил — в [exp2/README.md](exp2/README.md).
+Для проверки переноса добавлены общие промпты `exp2/routing_general_ru_exp2.txt`
+и `exp2/routing_general_en_exp2.txt`, выбираемые через --system-prompt.
+[Аудит последних результатов и подгонки по gold](experiments/exp2/analysis/prompt_generalization_20261109/README.md).
 
 Общие адаптеры моделей, движок оценки и CLI: `routing_bench/`.
 Файлы конкретного эксперимента имеют суффикс `_exp1` / `_exp2`.

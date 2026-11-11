@@ -22,6 +22,8 @@ class HTTPBackend:
         self.info = {"transport": "http", "endpoint": endpoint, "api_format": api_format}
 
     def __call__(self, payload: dict) -> dict:
+        if self.api_format == "cloudflare" and payload.get("model") not in {"clef", "clef-flash"}:
+            raise ValueError("Cloudflare Clef REST API requires --model clef or clef-flash, not a Hugging Face repository ID")
         body = {"inputs": payload} if self.api_format == "hf-handler" else payload
         for attempt in range(self.retries + 1):
             try:
@@ -43,6 +45,15 @@ class HTTPBackend:
                 result = result[0]
             if not isinstance(result, dict):
                 raise ValueError("Expected a JSON object from decision endpoint")
+            if self.api_format == "cloudflare":
+                if result.get("success") is not True:
+                    raise RuntimeError(f"Cloudflare API reported failure: {str(result.get('errors', []))[:1000]}")
+                native = result.get("result")
+                if not isinstance(native, dict) or not isinstance(native.get("answers"), dict):
+                    raise ValueError("Cloudflare result must contain a native decisions object with answers")
+                # Keep the complete REST envelope for provenance, while exposing the
+                # native decision fields expected by the common scorer.
+                result = dict(native, cloudflare_response=result)
             return result
         raise AssertionError("unreachable")
 
@@ -219,7 +230,10 @@ def hf_backend(args):
     if args.mode == "api":
         if not args.endpoint:
             raise ValueError("--mode api requires --endpoint (a deployed native decision endpoint)")
-        return HTTPBackend(args.endpoint, os.environ.get(args.api_key_env), args.timeout, args.retries, args.api_format)
+        token = os.environ.get(args.api_key_env)
+        if args.api_format == "cloudflare" and not token:
+            raise ValueError(f"Set {args.api_key_env} in the environment or .env")
+        return HTTPBackend(args.endpoint, token, args.timeout, args.retries, args.api_format)
     return LocalBackend(args.model, args.adapter, args.device, args.dtype,
                         args.revision, args.cache_dir, args.max_input_tokens,
                         args.jeva_cache, args.jeva_option_chunk_size, args.jeva_option_batch_tokens,

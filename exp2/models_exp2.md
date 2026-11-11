@@ -207,25 +207,90 @@ openai_body = {
 
 ## Память на 5060 Ti 16 GB
 
-Оценки **только хранения номинальных весов**, десятичные GB; не измеренный пик:
+Уточнено 09.11.2026: прежняя оценка 27B ≈13.5 GB в 4-bit была идеальным
+произведением числа параметров на 0.5 byte. Она не описывает наш стандартный
+BitsAndBytes loader: input embeddings и выходная vocabulary matrix остаются
+BF16. Joint head использует output embeddings, поэтому удалить lm_head как
+«ненужный для генерации» нельзя без изменения native inference.
 
-| Модель | BF16, 2 bytes/param | INT8, 1 byte/param | 4-bit, 0.5 byte/param |
+Ниже **расчётные нижние границы хранения backbone**, GiB (2^30 bytes), без
+joint head, scales, других float-компонентов, активаций и workspace.
+BNB-колонки учитывают две BF16 embedding-матрицы, а все остальные параметры
+оптимистично считают по 1 или 0.5 byte. Это не измеренный пик VRAM.
+
+| Модель | BF16 | BNB 8-bit, минимум | BNB 4-bit, минимум |
 | --- | ---: | ---: | ---: |
-| 9B | ~18 GB | ~9 GB | ~4.5 GB |
-| 27B | ~54 GB | ~27 GB | ~13.5 GB |
+| Clef-flash 9B | 17.53 GiB | 10.66 GiB | 7.22 GiB |
+| Clef 27B | 50.96 GiB | 27.85 GiB | 16.29 GiB |
 
-Реальный checkpoint включает дополнительные компоненты, а quantization хранит
-scales и оставляет часть модулей в float. Плюс активации всех input tokens,
-head и attention workspace; полный длинный input дороже короткого. На 16 GB
-разумный первый smoke run — Clef-flash 4-bit, один запрос, затем проверка 2-step.
-27B 4-bit близок к пределу уже по весам и не гарантирован; предпочтителен endpoint
-на большем GPU. `--max-input-tokens` отклоняет слишком длинный вход целиком,
-не обрезает его для влезания. Фактический пик и скорость покажет отдельный запуск.
+Источники расчёта: [Flash index](https://huggingface.co/Cloudflare/clef-flash/blob/main/model.safetensors.index.json),
+[Flash config](https://huggingface.co/Cloudflare/clef-flash/blob/main/config.json),
+[Clef index](https://huggingface.co/Cloudflare/clef/blob/main/model.safetensors.index.json),
+[Clef config](https://huggingface.co/Cloudflare/clef/blob/main/config.json),
+[native loader/head](https://huggingface.co/Cloudflare/clef/blob/main/joint_schema_model.py),
+[BNB replacement](https://github.com/huggingface/transformers/blob/v5.10.2/src/transformers/integrations/bitsandbytes.py).
+У Flash vocabulary=248320, hidden=4096; у Clef hidden=5120; embeddings untied.
+Точные закреплённые SHA Clef повторно скачать в этом аудите не удалось;
+upstream числа проверены по опубликованному main, GPU-тестов здесь нет.
 
-4/8-bit загрузка добавлена через Transformers BitsAndBytesConfig для backbone;
-head остаётся в dtype. Это предусмотренный раннером режим, ещё не подтверждённый
-GPU smoke run с данными весами. Версии CUDA/torch/bitsandbytes должны поддерживать
-5060 Ti. Квантование способно менять ranking: сравнивай такие результаты отдельно.
+Практически: на 16 GiB начинай с **Flash 4-bit**. Его 8-bit вариант имеет меньше
+запаса под длинный stage 2. Обычный **27B BNB4 целиком на GPU не помещается**
+уже по нижней границе. Наш loader использует один GPU, CPU offload не включён.
+Суммарный размер корзины не умножает веса на 193: запросы идут последовательно;
+пик определяется самым тяжёлым отдельным входом. В exp2 максимум возможного
+shortlist=5 — 55,489 символов full texts до query, инструкции и native wrapper.
+Символы не равны токенам; даже «влезший в память» короткий smoke run не проверяет
+весь диапазон длин. Численного измеренного пика на 5060 Ti пока нет.
+
+### Другие квантованные сборки 27B
+
+Есть [TurinTech Clef-Artemis-GGUF](https://huggingface.co/turintech/Clef-Artemis-GGUF),
+сохраняющий нативный decision режим в свежем llama.cpp. Например, издатель
+измерил на RTX 5090 пики 15.1 GiB для IQ4_XS, 13.4 GiB для Q3_K_M и
+12.5 GiB для IQ3_XXS. Его конфигурация использует -ub/-b=4096;
+/v1/systemone отклоняет вход длиннее -ub. Это **не измерения длинных exp2-входов**
+и не проверка 5060 Ti. Увеличение batch-предела под полные тексты требует
+повторного измерения. [Методика и результаты](https://huggingface.co/turintech/Clef-Artemis-GGUF/blob/main/RESULTS.md).
+
+GGUF нельзя передать нашему локальному Transformers-адаптеру. Его запускают
+через поддерживающий Clef llama-server, а раннер подключают как
+--backend hf --mode api --api-format systemone. Сервер должен сохранить
+joint-schema head; обычный chat endpoint или квантованный базовый Qwen
+не заменяет Clef. Квантованные варианты сравнивай как отдельные конфигурации.
+
+4/8-bit BNB загрузка уже предусмотрена через --clef-quantization, head остаётся
+в --dtype. Для 5060 Ti нужен совместимый PyTorch/CUDA/BNB стек: официальные
+сборки BNB с SM120 указаны для CUDA 12.8 и новее.
+[Таблица поддержки](https://huggingface.co/docs/bitsandbytes/v0.50.2/en/installation).
+
+### Удалённый API
+
+Cloudflare Workers AI уже обслуживает обе модели: [Flash](https://developers.cloudflare.com/workers-ai/models/clef-flash/)
+с контекстом 24,576 и [Clef](https://developers.cloudflare.com/workers-ai/models/clef/)
+с контекстом 65,536. Choices: 2–255, в exp2 один вопрос с 17 вариантами.
+Для прямого REST добавлен **--api-format cloudflare**: отправляет native body,
+проверяет success/result и раскрывает result.answers. Полная исходная обёртка
+сохраняется в details.response.cloudflare_response. model должен быть
+**clef-flash** или **clef**, без префикса Cloudflare/.
+
+Аккаунт, Account ID и Workers AI API token (Read/Edit) получают по
+[официальной инструкции](https://developers.cloudflare.com/workers-ai/get-started/rest-api/).
+API token — в CLOUDFLARE_API_TOKEN окружения или .env. Доступность полной
+корзины зависит от квоты/биллинга аккаунта; платных вызовов в этом изменении нет.
+Команды полного прогона приведены в README.
+
+Параметры --device, --dtype, --clef-quantization, --revision и --max-input-tokens
+на удалённый сервер не передаются. Сервис определяет precision и контекст.
+При переполнении Workers AI может усекать state, а слишком большая schema
+отклоняется; локальная защита от обрезки не распространяется на чужой endpoint.
+Для сравнения зафиксируй общий промпт, модель/провайдера и проверь input usage.
+
+Альтернатива — собственный native SystemOne endpoint. Официальный
+[SGLang cookbook](https://docs.sglang.io/cookbook/autoregressive/Cloudflare/clef)
+требует сборку с Clef joint head и описывает лимит prompt 16384 с возможной
+обрезкой state. Для HF dedicated Endpoint наш handler требует
+DECISION_ADAPTER=clef и зависимостей Clef вместо поставляемого FRIDA requirements;
+одного HF_TOKEN и ID репозитория для hosted inference недостаточно.
 
 
 С 05.11.2026 default exp2 использует bucket_only_enabled и corpus[enabled=1].

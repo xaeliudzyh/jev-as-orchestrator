@@ -1,0 +1,26 @@
+[
+  {
+    "sample_id": 0,
+    "question": "Покажи распределение агентных навыков по ролям в нашем блоке: сколько сотрудников на каждом уровне n1..n6 и средняя доля ИИ-кода",
+    "expected_subagents": [
+      "agentic_skills"
+    ],
+    "source_skill_name": "agentic_skills"
+  },
+  {
+    "sample_id": 1,
+    "question": "Как выглядит обзор агентных навыков по команде аналитики — сколько человек n3+ и какая доля ИИ-кода",
+    "expected_subagents": [
+      "agentic_skills"
+    ],
+    "source_skill_name": "agentic_skills"
+  },
+  {
+    "sample_id": 2,
+    "question": "Дай агрегат агентных навыков по роли «Data Scientist» за последний период",
+    "expected_subagents": [
+      "agentic_skills"
+    ],
+    "source_skill_name": "agentic_skills"
+  }
+]

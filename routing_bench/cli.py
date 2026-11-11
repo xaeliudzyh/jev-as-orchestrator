@@ -18,7 +18,8 @@ def hf_parser(description, experiment, **common_options):
     parser.add_argument("--jeva-option-batch-tokens", type=int, default=4096,
                         help="Jeva padded-token batch budget; a single longer option is still encoded whole")
     parser.add_argument("--endpoint", help="Full URL of a deployed native decision endpoint")
-    parser.add_argument("--api-format", choices=("hf-handler", "systemone"), default="hf-handler")
+    parser.add_argument("--api-format", choices=("hf-handler", "systemone", "cloudflare"), default="hf-handler",
+                        help="HF custom-handler envelope, native SystemOne, or Cloudflare Clef REST envelope")
     parser.add_argument("--api-key-env", default="HF_TOKEN")
     parser.add_argument("--clef-quantization", choices=("none", "4bit", "8bit"), default="none",
                         help="Local Clef backbone only; requires bitsandbytes for 4/8-bit loading")

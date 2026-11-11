@@ -1,0 +1,39 @@
+{
+  "n_samples": 193,
+  "hits": {
+    "accuracy@1": 122,
+    "accuracy@3": 152,
+    "accuracy@5": 161
+  },
+  "accuracy@1": 0.6321243523316062,
+  "accuracy@3": 0.7875647668393783,
+  "accuracy@5": 0.8341968911917098,
+  "status": "completed",
+  "evaluated_stage": 2,
+  "n_samples_planned": 193,
+  "n_samples_unprocessed": 0,
+  "n_errors": 0,
+  "complete": true,
+  "missing_labels": [],
+  "n_unreachable_samples": 0,
+  "elapsed_seconds": 158.292167,
+  "error": null,
+  "stage_inference_seconds": {
+    "1": 69.97804925098899,
+    "2": 88.13658692798344
+  },
+  "inference_seconds": 158.11463617897243,
+  "timing_scope": "pipeline_wall_time",
+  "stage_1_metrics": {
+    "n_samples": 193,
+    "hits": {
+      "accuracy@1": 115,
+      "accuracy@3": 152,
+      "accuracy@5": 161
+    },
+    "accuracy@1": 0.5958549222797928,
+    "accuracy@3": 0.7875647668393783,
+    "accuracy@5": 0.8341968911917098
+  },
+  "shortlist_hit_rate": 0.8341968911917098
+}

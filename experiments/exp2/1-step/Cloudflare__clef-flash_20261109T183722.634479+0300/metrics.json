@@ -1,0 +1,26 @@
+{
+  "n_samples": 0,
+  "hits": {
+    "accuracy@1": 0,
+    "accuracy@3": 0,
+    "accuracy@5": 0
+  },
+  "accuracy@1": null,
+  "accuracy@3": null,
+  "accuracy@5": null,
+  "status": "interrupted",
+  "evaluated_stage": 1,
+  "n_samples_planned": 193,
+  "n_samples_unprocessed": 193,
+  "n_errors": 0,
+  "complete": false,
+  "missing_labels": [],
+  "n_unreachable_samples": 0,
+  "elapsed_seconds": 19.912488,
+  "error": "KeyboardInterrupt",
+  "stage_inference_seconds": {
+    "1": 0.0
+  },
+  "inference_seconds": 0.0,
+  "timing_scope": "pipeline_wall_time"
+}

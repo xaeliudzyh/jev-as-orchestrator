@@ -1,0 +1,1 @@
+{"sample_id": 162, "question": "Кому я делегировал полномочия?", "expected_subagents": ["hrp-analytics"], "source_skill_name": "delegation_view", "stage": 2, "status": "error", "winner": null, "probability": null, "ranking": [], "confidence": null, "error": "RuntimeError: HTTP 502: {\"error\":{\"message\":\"OpenAI refused to answer question \\\"subagent\\\"\",\"code\":502}}"}
